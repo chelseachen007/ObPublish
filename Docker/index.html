@@ -1,0 +1,490 @@
+<!doctype html><html lang=en><head><script async defer data-website-id=08a754c4-6690-46d7-bb80-8ff93cfa232f src=https://umami.oldwinter.top/umami.js></script><meta charset=utf-8><meta name=description content="Docker Docker 简介 Docker 镜像 是一种 UnionFS（联合文件系统），是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下.
+镜像同时也很小，因为我们 pull 的镜像剔除了无用的东西，只是一个精简功能版的镜像
+下载是一层一层下载，这样便于共享资源。
+Docker 容器数据卷 卷就是目录或文件，存在于一个或多个容器中，由 docker 挂载到容器，但不属于联合文件系统，因此能够绕过 Union File System 提供一些用于持续存储或共享数据的特性，卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此 Docker 不会在容器删除时删除其挂载的数据卷。"><title>🌿知识花园🌸</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://ob.tianzhongs.ml//icon.png><link href=https://ob.tianzhongs.ml/styles.b3e1e36b0403ac565c9392b3e23ef3b6.min.css rel=stylesheet><link href=https://ob.tianzhongs.ml/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://ob.tianzhongs.ml/js/darkmode.39c2c88b3447f5b3d88347763905ade7.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/util.9825137f5e7825e8553c68ce39ac9e44.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://ob.tianzhongs.ml/js/popover.abe6a51cc7138c5dff00f151dd627ad1.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const BASE_URL="https://ob.tianzhongs.ml/",fetchData=Promise.all([fetch("https://ob.tianzhongs.ml/indices/linkIndex.7799b8fde620b5dfe0ea73ebfefe392a.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://ob.tianzhongs.ml/indices/contentIndex.74a337d352c0976cbffba24c809f927f.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addCollapsibleCallouts(),initPopover("https://ob.tianzhongs.ml",!0,!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://ob.tianzhongs.ml",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],throwOnError:!1})}</script><script>window.Million={navigate:e=>window.location.href=e,prefetch:()=>{}},window.addEventListener("DOMContentLoaded",()=>{init(),render()})</script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-11MD77L81V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-11MD77L81V",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=search placeholder=支持标题及全文搜索...><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://ob.tianzhongs.ml/js/full-text-search.24827f874defbbc6d529926cbfcfb493.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://ob.tianzhongs.ml/>🌿知识花园🌸</a></h1><div class=spacer></div><div id=search-icon><p>search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><p class=meta>最近编辑于
+Unknown</p><ul class=tags></ul><aside class=mainTOC><details><summary>目录</summary><nav id=TableOfContents><ol><li><a href=#docker-简介>Docker 简介</a><ol><li><a href=#docker-镜像><strong>Docker 镜像</strong></a></li><li><a href=#docker-容器数据卷><strong>Docker 容器数据卷</strong></a></li><li><a href=#dockerfile>dockerfile</a></li><li><a href=#优势>优势</a></li></ol></li><li><a href=#流程整理>流程整理</a></li><li><a href=#docker-安装>Docker 安装</a><ol><li><a href=#安装-node>安装 node</a></li><li><a href=#自动化部署-cicd>自动化部署 CI/CD</a></li></ol></li><li><a href=#docker-优化>docker 优化</a><ol><li><a href=#利用镜像缓存>利用镜像缓存</a></li><li><a href=#减少-npm-install-时间>减少 npm install 时间</a></li><li><a href=#多阶段构建>多阶段构建</a></li></ol></li><li><a href=#docker-compose>Docker Compose</a><ol><li><a href=#启动>启动</a></li></ol></li><li><a href=#配置镜像>配置镜像</a></li><li><a href=#docker-常用命令>docker 常用命令</a><ol><li><a href=#镜像命令>镜像命令</a></li><li><a href=#容器基本命令切记有镜像才能创建容器>容器基本命令(切记，有镜像才能创建容器)</a></li><li><a href=#容器重要命令><strong>容器重要命令</strong></a></li></ol></li><li><a href=#docker-命令帮助>docker 命令帮助</a></li><li><a href=#docker-options>docker options</a></li></ol></nav></details></aside><a href=#docker><h1 id=docker><span class=hanchor arialabel=Anchor># </span>Docker</h1></a><a href=#docker-简介><h2 id=docker-简介><span class=hanchor arialabel=Anchor># </span>Docker 简介</h2></a><a href=#docker-镜像><h3 id=docker-镜像><span class=hanchor arialabel=Anchor># </span><strong>Docker 镜像</strong></h3></a><p>是一种 UnionFS（联合文件系统），是一种分层、轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟文件系统下.</p><p>镜像同时也很小，因为我们 pull 的镜像剔除了无用的东西，只是一个精简功能版的镜像</p><p>下载是一层一层下载，这样便于共享资源。</p><a href=#docker-容器数据卷><h3 id=docker-容器数据卷><span class=hanchor arialabel=Anchor># </span><strong>Docker 容器数据卷</strong></h3></a><p>卷就是目录或文件，存在于一个或多个容器中，由 docker 挂载到容器，但不属于联合文件系统，因此能够绕过 Union File System 提供一些用于持续存储或共享数据的特性，卷的设计目的就是数据的持久化，完全独立于容器的生存周期，因此 Docker 不会在容器删除时删除其挂载的数据卷。</p><p>dockerfile 也就是添加 容器数据卷的一种方式</p><a href=#dockerfile><h3 id=dockerfile><span class=hanchor arialabel=Anchor># </span>dockerfile</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s>        #基础镜像，当前新镜像是基于哪个镜像的</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>MAINTAINER</span><span class=s>    #镜像维护者的姓名和邮箱地址</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span>        <span class=c1>#容器构建时需要运行的命令</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s>        #当前容器对外暴露出的端口</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s>        #指定在创建容器后，终端默认登陆的进来工作目录</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENV</span>        <span class=c1>#用来在构建镜像过程中设置环境变量</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ADD</span>        <span class=c1>#将宿主机目录下的文件拷贝进镜像且ADD命令会自动处理URL和解压tar压缩包</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span>        <span class=c1>#类似ADD，拷贝文件和目录到镜像中。将从构建上下文目录中 &lt;源路径&gt; 的文件/目录复制到新的一层的镜像内的 &lt;目标路径&gt; 位置</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>VOLUME</span><span class=s>        #容器数据卷，用于数据保存和持久化工作</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span>        <span class=c1>#指定一个容器启动时要运行的命令，Dockerfile 中可以有多个 CMD 指令，但只有最后一个生效，CMD 会被 docker run 之后的参数替换</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ENTRYPOINT</span>     <span class=c1>#指定一个容器启动时要运行的命令，ENTRYPOINT 的目的和 CMD 一样，都是在指定容器启动程序及参数</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ONBUILD</span>        <span class=c>#当构建一个被继承的Dockerfile时运行命令，父镜像在被子继承后父镜像的onbuild被触发</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>例：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=c>#Dockerfile</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#制定node镜像的版本</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> node:10-alpine</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#移动当前目录下面的文件到app目录下</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ADD</span> . /app/<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#进入到app目录下面，类似cd</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> /app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#安装依赖</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> npm install<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#对外暴露的端口</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s> 3000</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c>#程序启动脚本</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;node&#34;</span><span class=p>,</span> <span class=s2>&#34;app.js&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><a href=#优势><h3 id=优势><span class=hanchor arialabel=Anchor># </span>优势</h3></a><table><thead><tr><th><strong>特性</strong></th><th><strong>容器</strong></th><th><strong>虚拟机</strong></th></tr></thead><tbody><tr><td>启动</td><td>秒级</td><td>分钟级</td></tr><tr><td>硬盘使用</td><td>一般为 MB</td><td>一般为 GB</td></tr><tr><td>性能</td><td>接近原生</td><td>弱于</td></tr><tr><td>系统支持量</td><td>单机支持上千个容器</td><td>一般几十个</td></tr></tbody></table><a href=#流程整理><h2 id=流程整理><span class=hanchor arialabel=Anchor># </span>流程整理</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>docker search nginx
+</span></span><span class=line><span class=cl>docker pull nginx
+</span></span><span class=line><span class=cl>docker images
+</span></span><span class=line><span class=cl>docker run -it -p 8080:8080 nginx
+</span></span><span class=line><span class=cl>docker ps
+</span></span><span class=line><span class=cl>docker stop ff6
+</span></span></code></pre></td></tr></table></div></div><a href=#docker-安装><h2 id=docker-安装><span class=hanchor arialabel=Anchor># </span>Docker 安装</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=err>#</span> <span class=nx>apt升级</span>
+</span></span><span class=line><span class=cl><span class=nx>sudo</span> <span class=nx>apt</span><span class=o>-</span><span class=nx>get</span> <span class=nx>update</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=nx>添加相关软件包</span>
+</span></span><span class=line><span class=cl><span class=nx>apt</span><span class=o>-</span><span class=nx>get</span> <span class=nx>install</span> <span class=nx>apt</span><span class=o>-</span><span class=nx>transport</span><span class=o>-</span><span class=nx>https</span>
+</span></span><span class=line><span class=cl><span class=nx>apt</span><span class=o>-</span><span class=nx>get</span> <span class=nx>install</span> <span class=nx>ca</span><span class=o>-</span><span class=nx>certificates</span> <span class=nx>curl</span> <span class=nx>software</span><span class=o>-</span><span class=nx>properties</span><span class=o>-</span><span class=nx>common</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=nx>下载软件包的合法性</span><span class=err>，</span><span class=nx>需要添加软件源的</span> <span class=nx>GPG</span> <span class=nx>密钥</span>
+</span></span><span class=line><span class=cl><span class=nx>curl</span> <span class=o>-</span><span class=nx>fsSL</span> <span class=nx>https</span><span class=o>:</span><span class=c1>//mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg | sudo apt-key add
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=nx>source</span><span class=p>.</span><span class=nx>list</span> <span class=nx>中添加</span> <span class=nx>Docker</span> <span class=nx>软件源</span>
+</span></span><span class=line><span class=cl><span class=nx>sudo</span> <span class=nx>add</span><span class=o>-</span><span class=nx>apt</span><span class=o>-</span><span class=nx>repository</span>
+</span></span><span class=line><span class=cl><span class=s2>&#34;deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  
+</span></span></span><span class=line><span class=cl><span class=s2>$(lsb_release -cs)   
+</span></span></span><span class=line><span class=cl><span class=s2>stable&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=nx>安装</span> <span class=nx>Docker</span> <span class=nx>CE</span>
+</span></span><span class=line><span class=cl><span class=nx>sudo</span> <span class=nx>apt</span><span class=o>-</span><span class=nx>get</span> <span class=nx>update</span>
+</span></span><span class=line><span class=cl><span class=nx>sudo</span> <span class=nx>apt</span><span class=o>-</span><span class=nx>get</span> <span class=nx>install</span> <span class=nx>docker</span><span class=o>-</span><span class=nx>ce</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>#</span> <span class=nx>Helloworld测试</span>
+</span></span><span class=line><span class=cl><span class=nx>docker</span> <span class=nx>run</span> <span class=nx>hello</span><span class=o>-</span><span class=nx>world</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#安装-node><h3 id=安装-node><span class=hanchor arialabel=Anchor># </span>安装 node</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl># 安装nvm
+</span></span><span class=line><span class=cl>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh <span class=p>|</span> bash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># 将nvm作为环境变量
+</span></span><span class=line><span class=cl>export NVM_DIR=<span class=s2>&#34;$HOME/.nvm&#34;</span>
+</span></span><span class=line><span class=cl>[ -s <span class=s2>&#34;$NVM_DIR/nvm.sh&#34;</span> ] <span class=p>&amp;&amp;</span> \. <span class=s2>&#34;$NVM_DIR/nvm.sh&#34;</span>  # This loads nvm
+</span></span><span class=line><span class=cl>[ -s <span class=s2>&#34;$NVM_DIR/bash_completion&#34;</span> ] <span class=p>&amp;&amp;</span> \. <span class=s2>&#34;$NVM_DIR/bash_completion&#34;</span>  # This loads nvm bash_completion
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>#安装最新版 node
+</span></span><span class=line><span class=cl>nvm install node
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>#安装pm2
+</span></span><span class=line><span class=cl>npm i pm2 -g
+</span></span></code></pre></td></tr></table></div></div><a href=#自动化部署-cicd><h3 id=自动化部署-cicd><span class=hanchor arialabel=Anchor># </span>自动化部署 CI/CD</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=c># dockerfile</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># build stage</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> node:lts-alpine as build-stage</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>WORKDIR</span><span class=s> /app</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> package*.json ./<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> npm install<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> . .<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> npm run build<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># production stage</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>FROM</span><span class=s> nginx:stable-alpine as production-stage</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>COPY</span> --from<span class=o>=</span>build-stage /app/dist /usr/share/nginx/html<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>EXPOSE</span><span class=s> 80</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;nginx&#34;</span><span class=p>,</span> <span class=s2>&#34;-g&#34;</span><span class=p>,</span> <span class=s2>&#34;daemon off;&#34;</span><span class=p>]</span><span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>逐行解析配置：</p><ul><li>FROM node:lts-alpine as build-stage：基于 node <code>lts-alpine</code> 版本镜像，并通过构建阶段命名，将有 node 环境的阶段命名为 <code>build-stage</code>（包含 alpine 的镜像版本相比于 latest 版本更加小巧，更适合作为 docker 镜像使用）</li><li>WORKDIR /app：将工作区设为 /app，和其他系统文件隔离</li><li>COPY package*.json ./：拷贝 package.json/package-lock.json 到容器的 /app 目录</li><li>RUN npm install：运行 <code>npm install</code> 在容器中安装依赖</li><li>COPY . .：拷贝其他文件到容器 /app 目录，分两次拷贝是因为保持 node_modules 一致</li><li>RUN npm run build：运行 <code>npm run build</code> 在容器中构建</li></ul><a href=#docker-优化><h2 id=docker-优化><span class=hanchor arialabel=Anchor># </span>docker 优化</h2></a><a href=#利用镜像缓存><h3 id=利用镜像缓存><span class=hanchor arialabel=Anchor># </span>利用镜像缓存</h3></a><p>相对于项目的源文件来讲，<code>package.json</code> 是相对稳定的。如果没有新的安装包需要下载，则再次构建镜像时，无需重新构建依赖。则可以在 npm install 上节省一半的时间。</p><p>对于 <code>ADD</code> 来讲，如果需要添加的文件内容的 <code>checksum</code> 没有发生变化，则可以利用缓存。把 <code>package.json/package-lock.json</code> 与源文件分隔开写入镜像是一个很好的选择。目前，如果没有新的安装包更新的话，可以节省一半时间</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl>...<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=c># 首次添加此两个文件，充分利用缓存</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>ADD</span> package.json package-lock.json /code<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> npm install --production<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>...<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><a href=#减少-npm-install-时间><h3 id=减少-npm-install-时间><span class=hanchor arialabel=Anchor># </span>减少 npm install 时间</h3></a><ol><li>选择时延低的 <code>registry</code>，需要企业技术基础建设支持</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>npm config set registry https://registry-npm.shanyue.tech/
+</span></span></code></pre></td></tr></table></div></div><ol start=2><li><code>NODE_ENV=production</code>，只安装生产环境必要的包(如果 dep 与 devDep 没有仔细分割开来，工作量很大，可以放弃)</li><li><code>CI=true</code>，npm 会在此环境变量下自动优化</li><li>结合 CI 的缓存功能，充分利用 <code>npm cache</code></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>npm ci</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># keep the npm cache around to speed up installs</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>cache</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>directories</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=s2>&#34;$HOME/.npm&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><ol start=5><li>使用 <code>npm ci</code> 代替 <code>npm i</code>，既提升速度又保障应用安全性</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>npm ci
+</span></span></code></pre></td></tr></table></div></div><a href=#多阶段构建><h3 id=多阶段构建><span class=hanchor arialabel=Anchor># </span>多阶段构建</h3></a><p>得益于缓存，现在镜像构建时间已经快了不少。但是，此时镜像的体积依旧过于庞大，这也将会导致部署时间的加长。原因如下</p><p>考虑下每次 CI/CD 部署的流程</p><ol><li>在构建服务器 (Runer) 构建镜像</li><li>把镜像推至镜像仓库服务器</li><li>在生产服务器拉取镜像，启动容器</li></ol><a href=#docker-compose><h2 id=docker-compose><span class=hanchor arialabel=Anchor># </span>Docker Compose</h2></a><p>Docker Compose 是 docker 提供的一个命令行工具，用来定义和运行由多个容器组成的应用。</p><p>使用 compose，我们可以通过 YAML 文件声明式的定义应用程序的各个服务，并由单个命令完成应用的创建和启动。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;3.1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>services</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>nginx</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restart</span><span class=p>:</span><span class=w> </span><span class=l>always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#　image是指定服务的镜像名称或镜像ID。如果镜像在本地不存在，Compose将会尝试拉取镜像。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>nginx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>8091</span><span class=p>:</span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#挂载一个目录或者一个已存在的数据卷容器，可以直接使用 [HOST:CONTAINER]格式，或者使用[HOST:CONTAINER:ro]格式，后者对于容器来说，数据卷是只读的，可以有效保护宿主机的文件系统。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>./nginx/conf.d/:/etc/nginx/conf.d</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>./frontend/dist/:/var/www/html/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>./static/:/static/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>app-pm2</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>app-pm2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#构建容器</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#服务除了可以基于指定的镜像，还可以基于一份Dockerfile，在使用up启动时执行构建任务，构建标签是build，可以指定Dockerfile所在文件夹的路径。Compose将会利用Dockerfile自动构建镜像，然后使用镜像启动服务容器。</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>build</span><span class=p>:</span><span class=w> </span><span class=l>./backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=s2>&#34;3000:3000&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><a href=#启动><h3 id=启动><span class=hanchor arialabel=Anchor># </span>启动</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>docker-compose up
+</span></span><span class=line><span class=cl>// or
+</span></span><span class=line><span class=cl>docker-compose up -d
+</span></span></code></pre></td></tr></table></div></div><a href=#配置镜像><h2 id=配置镜像><span class=hanchor arialabel=Anchor># </span>配置镜像</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>  &#34;registry-mirrors&#34;: [
+</span></span><span class=line><span class=cl>&#34;https://registry.docker-cn.com&#34;,
+</span></span><span class=line><span class=cl>&#34;http://hub-mirror.c.163.com&#34;,
+</span></span><span class=line><span class=cl>&#34;https://docker.mirrors.ustc.edu.cn&#34;,
+</span></span><span class=line><span class=cl>&#34;http://dockerhub.azk8s.cn/&#34; ],
+</span></span><span class=line><span class=cl>  &#34;insecure-registries&#34;: [],
+</span></span><span class=line><span class=cl>  &#34;debug&#34;: true,
+</span></span><span class=line><span class=cl>  &#34;experimental&#34;: false
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><a href=#docker-常用命令><h2 id=docker-常用命令><span class=hanchor arialabel=Anchor># </span>docker 常用命令</h2></a><a href=#镜像命令><h3 id=镜像命令><span class=hanchor arialabel=Anchor># </span>镜像命令</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>docker images                    #查看当前Docker中的镜像
+</span></span><span class=line><span class=cl>docker search 某个镜像名字                #查询某个镜像
+</span></span><span class=line><span class=cl>docker pull 某个镜像名字                #拉取(下载)某个镜像
+</span></span><span class=line><span class=cl>docker rmi 某个镜像名字ID                 #删除某个镜像
+</span></span></code></pre></td></tr></table></div></div><a href=#容器基本命令切记有镜像才能创建容器><h3 id=容器基本命令切记有镜像才能创建容器><span class=hanchor arialabel=Anchor># </span>容器基本命令(切记，有镜像才能创建容器)</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>docker run [OPTIONS] image [COMMAND] [ARG...]   #新建并启动容器
+</span></span><span class=line><span class=cl>docker ps [OPTIONS]                             #列出当前所有正在运行的容器
+</span></span><span class=line><span class=cl><span class=k>exit</span>                        #容器停止退出
+</span></span><span class=line><span class=cl>ctrl+P+Q                    #容器不停止退出
+</span></span><span class=line><span class=cl>docker start 容器ID或者容器名            #启动容器
+</span></span><span class=line><span class=cl>docker restart 容器ID或者容器名            #重启容器
+</span></span><span class=line><span class=cl>docker stop 容器ID或者容器名            #停止容器
+</span></span><span class=line><span class=cl>docker kill 容器ID或者容器名            #强制停止容器
+</span></span><span class=line><span class=cl>docker rm 容器ID                    #删除已停止的容器
+</span></span><span class=line><span class=cl>docker rm -f $(docker ps -a -q)            #一次性删除多个容器
+</span></span><span class=line><span class=cl>docker ps -a -q <span class=p>|</span> xargs docker rm        #一次性删除多个容器
+</span></span></code></pre></td></tr></table></div></div><a href=#容器重要命令><h3 id=容器重要命令><span class=hanchor arialabel=Anchor># </span><strong>容器重要命令</strong></h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>docker run -d 容器名                #启动守护式容器
+</span></span><span class=line><span class=cl>docker logs -f -t --tail 容器ID            #查看容器日志,-t是加入时间戳，-f是最新的日志打印,--tail数字显示最后多少条
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker top 容器ID                #查看容器内运行的进程
+</span></span><span class=line><span class=cl>docker inspect 容器ID                #查看容器内部细节
+</span></span><span class=line><span class=cl>docker exec -it 容器ID bashShell            #进入正在运行的容器并以命令行交互
+</span></span><span class=line><span class=cl>docker attach 容器ID                #重新进入Docker容器
+</span></span><span class=line><span class=cl>docker cp  容器ID:容器内路径 目的主机路径        #从容器内拷贝文件到主机上
+</span></span></code></pre></td></tr></table></div></div><a href=#docker-命令帮助><h2 id=docker-命令帮助><span class=hanchor arialabel=Anchor># </span>docker 命令帮助</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>Commands:
+</span></span><span class=line><span class=cl>    attach    Attach to a running container                 # 当前 shell 下 attach 连接指定运行镜像
+</span></span><span class=line><span class=cl>    build     Build an image from a Dockerfile              # 通过 Dockerfile 定制镜像
+</span></span><span class=line><span class=cl>    commit    Create a new image from a container&#39;s changes # 提交当前容器为新的镜像
+</span></span><span class=line><span class=cl>    cp        Copy files/folders from the containers filesystem to the host path
+</span></span><span class=line><span class=cl>              # 从容器中拷贝指定文件或者目录到宿主机中
+</span></span><span class=line><span class=cl>    create    Create a new container                        # 创建一个新的容器，同 run，但不启动容器
+</span></span><span class=line><span class=cl>    diff      Inspect changes on a container&#39;s filesystem   # 查看 docker 容器变化
+</span></span><span class=line><span class=cl>    events    Get real time events from the server          # 从 docker 服务获取容器实时事件
+</span></span><span class=line><span class=cl>    exec      Run a command in an existing container        # 在已存在的容器上运行命令
+</span></span><span class=line><span class=cl>    export    Stream the contents of a container as a tar archive
+</span></span><span class=line><span class=cl>              # 导出容器的内容流作为一个 tar 归档文件[对应 import ]
+</span></span><span class=line><span class=cl>    history   Show the history of an image                  # 展示一个镜像形成历史
+</span></span><span class=line><span class=cl>    images    List images                                   # 列出系统当前镜像
+</span></span><span class=line><span class=cl>    import    Create a new filesystem image from the contents of a tarball
+</span></span><span class=line><span class=cl>              # 从tar包中的内容创建一个新的文件系统映像[对应 export]
+</span></span><span class=line><span class=cl>    info      Display system-wide information               # 显示系统相关信息
+</span></span><span class=line><span class=cl>    inspect   Return low-level information on a container   # 查看容器详细信息
+</span></span><span class=line><span class=cl>    kill      Kill a running container                      # kill 指定 docker 容器
+</span></span><span class=line><span class=cl>    load      Load an image from a tar archive              # 从一个 tar 包中加载一个镜像[对应 save]
+</span></span><span class=line><span class=cl>    login     Register or Login to the docker registry server
+</span></span><span class=line><span class=cl>              # 注册或者登陆一个 docker 源服务器
+</span></span><span class=line><span class=cl>    logout    Log out from a Docker registry server         # 从当前 Docker registry 退出
+</span></span><span class=line><span class=cl>    logs      Fetch the logs of a container                 # 输出当前容器日志信息
+</span></span><span class=line><span class=cl>    port      Lookup the public-facing port which is NAT-ed to PRIVATE_PORT
+</span></span><span class=line><span class=cl>              # 查看映射端口对应的容器内部源端口
+</span></span><span class=line><span class=cl>    <span class=k>pause</span>     Pause all processes within a container        # 暂停容器
+</span></span><span class=line><span class=cl>    ps        List containers                               # 列出容器列表
+</span></span><span class=line><span class=cl>    pull      Pull an image or a repository from the docker registry server
+</span></span><span class=line><span class=cl>              # 从docker镜像源服务器拉取指定镜像或者库镜像
+</span></span><span class=line><span class=cl>    push      Push an image or a repository to the docker registry server
+</span></span><span class=line><span class=cl>              # 推送指定镜像或者库镜像至docker源服务器
+</span></span><span class=line><span class=cl>    restart   Restart a running container                   # 重启运行的容器
+</span></span><span class=line><span class=cl>    rm        Remove one or more containers                 # 移除一个或者多个容器
+</span></span><span class=line><span class=cl>    rmi       Remove one or more images
+</span></span><span class=line><span class=cl>              # 移除一个或多个镜像[无容器使用该镜像才可删除，否则需删除相关容器才可继续或 -f 强制删除]
+</span></span><span class=line><span class=cl>    run       Run a command in a new container
+</span></span><span class=line><span class=cl>              # 创建一个新的容器并运行一个命令
+</span></span><span class=line><span class=cl>    save      Save an image to a tar archive                # 保存一个镜像为一个 tar 包[对应 load]
+</span></span><span class=line><span class=cl>    search    Search for an image on the Docker Hub         # 在 docker hub 中搜索镜像
+</span></span><span class=line><span class=cl>    <span class=k>start</span>     Start a stopped containers                    # 启动容器
+</span></span><span class=line><span class=cl>    stop      Stop a running containers                     # 停止容器
+</span></span><span class=line><span class=cl>    tag       Tag an image into a repository                # 给源中镜像打标签
+</span></span><span class=line><span class=cl>    top       Lookup the running processes of a container   # 查看容器中运行的进程信息
+</span></span><span class=line><span class=cl>    unpause   Unpause a paused container                    # 取消暂停容器
+</span></span><span class=line><span class=cl>    version   Show the docker version information           # 查看 docker 版本号
+</span></span><span class=line><span class=cl>    wait      Block until a container stops, then print its exit code
+</span></span><span class=line><span class=cl>              # 截取容器停止时的退出状态值
+</span></span><span class=line><span class=cl>Run &#39;docker COMMAND --help&#39; for more information on a command.
+</span></span></code></pre></td></tr></table></div></div><a href=#docker-options><h2 id=docker-options><span class=hanchor arialabel=Anchor># </span>docker options</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cmd data-lang=cmd><span class=line><span class=cl>Usage of docker:
+</span></span><span class=line><span class=cl>  --api-enable-cors=false                Enable CORS headers in the remote API                      # 远程 API 中开启 CORS 头
+</span></span><span class=line><span class=cl>  -b, --bridge=<span class=s2>&#34;&#34;</span>                        Attach containers to a pre-existing network bridge         # 桥接网络
+</span></span><span class=line><span class=cl>                                           use &#39;none&#39; to disable container networking
+</span></span><span class=line><span class=cl>  --bip=<span class=s2>&#34;&#34;</span>                               Use this CIDR notation address for the network bridge&#39;s IP, not compatible with -b
+</span></span><span class=line><span class=cl>                                         # 和 -b 选项不兼容，具体没有测试过
+</span></span><span class=line><span class=cl>  -d, --daemon=false                     Enable daemon mode                                         # daemon 模式
+</span></span><span class=line><span class=cl>  -D, --debug=false                      Enable debug mode                                          # debug 模式
+</span></span><span class=line><span class=cl>  --dns=[]                               Force docker to use specific DNS servers                   # 强制 docker 使用指定 dns 服务器
+</span></span><span class=line><span class=cl>  --dns-search=[]                        Force Docker to use specific DNS search domains            # 强制 docker 使用指定 dns 搜索域
+</span></span><span class=line><span class=cl>  -e, --exec-driver=<span class=s2>&#34;native&#34;</span>             Force the docker runtime to use a specific exec driver     # 强制 docker 运行时使用指定执行驱动器
+</span></span><span class=line><span class=cl>  --fixed-cidr=<span class=s2>&#34;&#34;</span>                        IPv4 subnet for fixed IPs (ex: 10.20.0.0/16)
+</span></span><span class=line><span class=cl>                                           this subnet must be nested in the bridge subnet (which is defined by -b or --bip)
+</span></span><span class=line><span class=cl>  -G, --group=<span class=s2>&#34;docker&#34;</span>                   Group to assign the unix socket specified by -H when running in daemon mode
+</span></span><span class=line><span class=cl>                                           use &#39;&#39; (the empty string) to disable setting of a group
+</span></span><span class=line><span class=cl>  -g, --graph=<span class=s2>&#34;/var/lib/docker&#34;</span>          Path to use as the root of the docker runtime              # 容器运行的根目录路径
+</span></span><span class=line><span class=cl>  -H, --host=[]                          The socket(s) to bind to in daemon mode                    # daemon 模式下 docker 指定绑定方式[tcp or 本地 socket]
+</span></span><span class=line><span class=cl>                                           specified using one or more tcp://host:port, unix:///path/to/socket, fd://* or fd://socketfd.
+</span></span><span class=line><span class=cl>  --icc=true                             Enable inter-container communication                       # 跨容器通信
+</span></span><span class=line><span class=cl>  --insecure-registry=[]                 Enable insecure communication with specified registries (no certificate verification for HTTPS and enable HTTP fallback) (e.g., localhost:5000 or 10.20.0.0/16)
+</span></span><span class=line><span class=cl>  --ip=<span class=s2>&#34;0.0.0.0&#34;</span>                         Default IP address to use when binding container ports     # 指定监听地址，默认所有 ip
+</span></span><span class=line><span class=cl>  --ip-forward=true                      Enable net.ipv4.ip_forward                                 # 开启转发
+</span></span><span class=line><span class=cl>  --ip-masq=true                         Enable IP masquerading for bridge&#39;s IP range
+</span></span><span class=line><span class=cl>  --iptables=true                        Enable Docker&#39;s addition of iptables rules                 # 添加对应 iptables 规则
+</span></span><span class=line><span class=cl>  --mtu=0                                Set the containers network MTU                             # 设置网络 mtu
+</span></span><span class=line><span class=cl>                                           <span class=k>if</span> no<span class=err> value is provided: default to the default route MTU or 1500 if no default route is available</span>
+</span></span><span class=line><span class=cl>  -p, --pidfile=<span class=s2>&#34;/var/run/docker.pid&#34;</span>    Path to use for daemon PID file                            # 指定 pid 文件位置
+</span></span><span class=line><span class=cl>  --registry-mirror=[]                   Specify a preferred Docker registry mirror
+</span></span><span class=line><span class=cl>  -s, --storage-driver=<span class=s2>&#34;&#34;</span>                Force the docker runtime to use a specific storage driver  # 强制 docker 运行时使用指定存储驱动
+</span></span><span class=line><span class=cl>  --selinux-enabled=false                Enable selinux support                                     # 开启 selinux 支持
+</span></span><span class=line><span class=cl>  --storage-opt=[]                       Set storage driver options                                 # 设置存储驱动选项
+</span></span><span class=line><span class=cl>  --tls=false                            Use TLS; implied by tls-verify flags                       # 开启 tls
+</span></span><span class=line><span class=cl>  --tlscacert=<span class=s2>&#34;/root/.docker/ca.pem&#34;</span>     Trust only remotes providing a certificate signed by the CA given here
+</span></span><span class=line><span class=cl>  --tlscert=<span class=s2>&#34;/root/.docker/cert.pem&#34;</span>     Path to TLS certificate file                               # tls 证书文件位置
+</span></span><span class=line><span class=cl>  --tlskey=<span class=s2>&#34;/root/.docker/key.pem&#34;</span>       Path to TLS key file                                       # tls key 文件位置
+</span></span><span class=line><span class=cl>  --tlsverify=false                      Use TLS and verify the remote (daemon: verify client, client: verify daemon) # 使用 tls 并确认远程控制主机
+</span></span><span class=line><span class=cl>  -v, --version=false                    Print version information and quit                         # 输出 docker 版本信息
+</span></span></code></pre></td></tr></table></div></div></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>反向链接</h3><ul class=backlinks><li><a href=/%E5%89%8D%E7%AB%AF/ data-ctx=Docker data-src=/%E5%89%8D%E7%AB%AF class=internal-link></a></li><li><a href=/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/ data-ctx=Docker data-src=/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96 class=internal-link></a></li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>内部链接关系图</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://ob.tianzhongs.ml/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><hr><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js></script><script src=alittlejs/md5.min.js></script><div id=gitalk-container></div><script>var gitalk=new Gitalk({clientID:"1a90dd4010f13d9e2b6a",clientSecret:"2b627f0d32eac2004d2abd8f0d143905bf1f50be",repo:"ObPublish",owner:"chelseachen007",admin:["chelseachen007"],id:location.href,distractionFreeMode:!1});gitalk.render("gitalk-container")</script><center><script>var caution=!1,now,visits;function setCookie(e,t,n,s,o,a){var i=e+"="+escape(t)+(n?"; expires="+n.toGMTString():"")+(s?"; path="+s:"")+(o?"; domain="+o:"")+(a?"; secure":"");!caution||(e+"="+escape(t)).length<=4e3?document.cookie=i:confirm("Cookie exceeds 4KB and will be cut!")&&(document.cookie=i)}function getCookie(s){var e=s+"=",n,t=document.cookie.indexOf(e);return t==-1?null:(n=document.cookie.indexOf(";",t+e.length),n==-1&&(n=document.cookie.length),unescape(document.cookie.substring(t+e.length,n)))}function deleteCookie(e,t,n){getCookie(e)&&(document.cookie=e+"="+(t?"; path="+t:"")+(n?"; domain="+n:"")+"; expires=Thu, 01-Jan-70 00:00:01 GMT")}function fixDate(e){var n=new Date(0),t=n.getTime();t>0&&e.setTime(e.getTime()-t)}now=new Date,fixDate(now),now.setTime(now.getTime()+730*24*60*60*1e3),visits=getCookie("counter"),visits?visits=parseInt(visits)+1:visits=1,setCookie("counter",visits,now),document.write("<font size=2>👋访问量："+visits+"")</script></center></div></body></html>

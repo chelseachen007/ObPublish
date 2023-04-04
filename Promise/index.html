@@ -1,0 +1,285 @@
+<!doctype html><html lang=en><head><script async defer data-website-id=08a754c4-6690-46d7-bb80-8ff93cfa232f src=https://umami.oldwinter.top/umami.js></script><meta charset=utf-8><meta name=description content="为什么会有 promise 首先让我们来了解下,回调函数有什么缺点:
+ 多重嵌套,导致回调地狱 代码跳跃,并非人类习惯的思维模式 ，代码逻辑不连续 信任问题,你不能把你的回调完全寄托与第三方库,因为你不知道第三方库到底会怎么执行回调（多次执行） 第三方库可能没有提供错误处理 不清楚回调是否都是异步调用的（可以同步调用 ajax,在收到响应前会阻塞整个线程,会陷入假死状态,非常不推荐）  为了兼容一些 promise 库,Promise 采用了一种鸭子模型（如果它看起来像只鸭子,叫起来 像只鸭子,那它一定就是只鸭子）来判断这个函数是不是一个 promise 函数,也就是判断.then()方法是否注册了 &ldquo;fullfillment&rdquo; 和 / 或 &ldquo;rejection&rdquo; 事件."><title>🌿知识花园🌸</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://ob.tianzhongs.ml//icon.png><link href=https://ob.tianzhongs.ml/styles.b3e1e36b0403ac565c9392b3e23ef3b6.min.css rel=stylesheet><link href=https://ob.tianzhongs.ml/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://ob.tianzhongs.ml/js/darkmode.39c2c88b3447f5b3d88347763905ade7.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/util.9825137f5e7825e8553c68ce39ac9e44.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://ob.tianzhongs.ml/js/popover.abe6a51cc7138c5dff00f151dd627ad1.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const BASE_URL="https://ob.tianzhongs.ml/",fetchData=Promise.all([fetch("https://ob.tianzhongs.ml/indices/linkIndex.7799b8fde620b5dfe0ea73ebfefe392a.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://ob.tianzhongs.ml/indices/contentIndex.74a337d352c0976cbffba24c809f927f.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addCollapsibleCallouts(),initPopover("https://ob.tianzhongs.ml",!0,!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://ob.tianzhongs.ml",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],throwOnError:!1})}</script><script>window.Million={navigate:e=>window.location.href=e,prefetch:()=>{}},window.addEventListener("DOMContentLoaded",()=>{init(),render()})</script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-11MD77L81V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-11MD77L81V",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=search placeholder=支持标题及全文搜索...><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://ob.tianzhongs.ml/js/full-text-search.24827f874defbbc6d529926cbfcfb493.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://ob.tianzhongs.ml/>🌿知识花园🌸</a></h1><div class=spacer></div><div id=search-icon><p>search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><p class=meta>最近编辑于
+Unknown</p><ul class=tags></ul><aside class=mainTOC><details><summary>目录</summary><nav id=TableOfContents><ol><li><ol><li></li><li><a href=#手写-promise>手写 promise</a></li></ol></li></ol></nav></details></aside><a href=#为什么会有-promise><h4 id=为什么会有-promise><span class=hanchor arialabel=Anchor># </span>为什么会有 promise</h4></a><p>首先让我们来了解下,回调函数有什么缺点:</p><ol><li>多重嵌套,导致<strong>回调地狱</strong></li><li><strong>代码跳跃,并非人类习惯的思维模式 ，代码逻辑不连续</strong></li><li>信任问题,你不能把你的回调完全寄托与第三方库,因为你不知道第三方库到底会怎么执行回调（多次执行）</li><li>第三方库可能没有提供错误处理</li><li>不清楚回调是否都是异步调用的（可以同步调用 ajax,在收到响应前会阻塞整个线程,会陷入假死状态,非常不推荐）</li></ol><p>为了兼容一些 promise 库,Promise 采用了一种鸭子模型（<strong>如果它看起来像只鸭子,叫起来 像只鸭子,那它一定就是只鸭子</strong>）来判断这个函数是不是一个 promise 函数,也就是判断.then()方法是否注册了 &ldquo;<code>fullfillment</code>&rdquo; 和 / 或 &ldquo;<code>rejection</code>&rdquo; 事件.</p><p>代码跳跃则是通过事件穿透解决的，<strong>但是也没有那么黑魔法，只不过是 then 默认参数就是把值往后传或者抛</strong></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nx>onResolved</span> <span class=o>=</span> <span class=k>typeof</span> <span class=nx>onResolved</span> <span class=o>===</span> <span class=s1>&#39;function&#39;</span> <span class=o>?</span> <span class=nx>onResolved</span> <span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>value</span><span class=p>)</span> <span class=p>{</span><span class=k>return</span> <span class=nx>value</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=nx>onRejected</span> <span class=o>=</span> <span class=k>typeof</span> <span class=nx>onRejected</span> <span class=o>===</span> <span class=s1>&#39;function&#39;</span> <span class=o>?</span> <span class=nx>onRejected</span> <span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>reason</span><span class=p>)</span> <span class=p>{</span><span class=k>throw</span> <span class=nx>reason</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#promise-方法><h4 id=promise-方法><span class=hanchor arialabel=Anchor># </span>promise 方法</h4></a><a href=#1promiseprototypefinally><h5 id=1promiseprototypefinally><span class=hanchor arialabel=Anchor># </span>1.Promise.prototype.finally()</h5></a><p>finally 方法用于指定不管 Promise 对象最后状态如何,都会执行的操作。该方法是 ES2018 引入标准的。</p><p>相当于</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=k>finally</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>callback</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>P</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>constructor</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=k>this</span><span class=p>.</span><span class=nx>then</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=nx>value</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>P</span><span class=p>.</span><span class=nx>resolve</span><span class=p>(</span><span class=nx>callback</span><span class=p>()).</span><span class=nx>then</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=nx>value</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=p>(</span><span class=nx>reason</span><span class=p>)</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>P</span><span class=p>.</span><span class=nx>resolve</span><span class=p>(</span><span class=nx>callback</span><span class=p>()).</span><span class=nx>then</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>throw</span> <span class=nx>reason</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>})</span>
+</span></span><span class=line><span class=cl>  <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#2promiseall><h5 id=2promiseall><span class=hanchor arialabel=Anchor># </span>2.Promise.all()</h5></a><p>Promise.all()方法用于将多个 Promise 实例,包装成一个新的 Promise 实例。</p><p>另外,Promise.all()方法的参数可以不是数组,但<strong>必须具有 Iterator 接口,且返回的每个成员都是 Promise 实例。</strong></p><ol><li>只有 p1、p2、p3 的状态<strong>都变成 fulfilled</strong>,p 的状态才会变成 fulfilled, 此时 p1、p2、p3 的返回值组成一个数组, 传递给 p 的回调函数。</li><li>只要 p1、p2、p3 之中<strong>有一个被 rejected</strong>,p 的状态就变成 rejected, 此时第一个被 reject 的实例的返回值, 会传递给 p 的回调函数。</li></ol><a href=#3promiserace><h5 id=3promiserace><span class=hanchor arialabel=Anchor># </span>3.Promise.race()</h5></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>p</span> <span class=o>=</span> <span class=nb>Promise</span><span class=p>.</span><span class=nx>race</span><span class=p>([</span><span class=nx>p1</span><span class=p>,</span> <span class=nx>p2</span><span class=p>,</span> <span class=nx>p3</span><span class=p>]);</span>
+</span></span></code></pre></td></tr></table></div></div><p>上面代码中,只要 p1、p2、p3 之中有一个实例率先改变状态,p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值,就传递给 p 的回调函数。</p><p>下面是一个例子,如果指定时间内没有获得结果,就将 Promise 的状态变为 reject,否则变为 resolve。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kr>const</span> <span class=nx>p</span> <span class=o>=</span> <span class=nb>Promise</span><span class=p>.</span><span class=nx>race</span><span class=p>([</span>
+</span></span><span class=line><span class=cl>  <span class=nx>fetch</span><span class=p>(</span><span class=s2>&#34;/resource-that-may-take-a-while&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>  <span class=k>new</span> <span class=nb>Promise</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>setTimeout</span><span class=p>(()</span> <span class=p>=&gt;</span> <span class=nx>reject</span><span class=p>(</span><span class=k>new</span> <span class=nb>Error</span><span class=p>(</span><span class=s2>&#34;request timeout&#34;</span><span class=p>)),</span> <span class=mi>5000</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}),</span>
+</span></span><span class=line><span class=cl><span class=p>]);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>p</span><span class=p>.</span><span class=nx>then</span><span class=p>(</span><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>).</span><span class=k>catch</span><span class=p>(</span><span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>上面代码中,如果 5 秒之内 <code>fetch</code> 方法无法返回结果,变量 p 的状态就会变为 <code>rejected</code>,从而触发 <code>catch</code> 方法指定的回调函数。</p><p>这种可以使用 <code>axios</code> 的超时拦截,别的什么作用还没想到</p><a href=#4promiseallsettled><h5 id=4promiseallsettled><span class=hanchor arialabel=Anchor># </span>4.Promise.allSettled()</h5></a><p><code>Promise.allSettled()</code> 方法接受一组 <code>Promise</code> 实例作为参数,包装成一个新的 <code>Promise</code> 实例。只有等到所有这些参数实例都返回结果,不管是 <code>fulfilled</code> 还是 <code>rejected</code>,包装实例才会结束。该方法由 <strong>ES2020</strong> 引入。</p><p>有时候,我们<strong>不关心异步操作的结果,只关心这些操作有没有结束</strong>。这时,<code>Promise.allSettled()</code>方法就很有用。如果没有这个方法,想要确保所有操作都结束,就很麻烦。Promise.all()方法无法做到这一点。</p><a href=#5promiseany><h5 id=5promiseany><span class=hanchor arialabel=Anchor># </span>5.Promise.any()</h5></a><p>与 promise.all()相反</p><p><strong>Promise.any()</strong> 方法接受一组 <code>Promise</code> 实例作为参数,包装成一个新的 <code>Promise</code> 实例。只要参数实例有一个变成 <code>fulfilled</code> 状态,包装实例就会变成 fulfilled 状态；如果所有参数实例都变成 <code>rejected</code> 状态,包装实例就会变成 <code>rejected</code> 状态。该方法目前是一个第三阶段的提案 。</p><a href=#6promiseresolve><h5 id=6promiseresolve><span class=hanchor arialabel=Anchor># </span>6.Promise.resolve()</h5></a><p>有时需要将现有对象转为 <code>Promise</code> 对象,<strong>Promise.resolve()</strong> 方法就起到这个作用。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>resolve</span><span class=p>()</span><span class=nx>等价于下面的写法</span>
+</span></span><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>resolve</span><span class=p>(</span><span class=s1>&#39;foo&#39;</span><span class=p>)</span> <span class=c1>// 等价于 new Promise(resolve =&gt; resolve(&#39;foo&#39;))
+</span></span></span></code></pre></td></tr></table></div></div><p>Promise.resolve 方法的参数分成四种情况:
+（1）参数是一个 Promise 实例
+如果参数是 Promise 实例,那么 Promise.resolve 将不做任何修改、原封不动地返回这个实例。
+（2）参数是一个 thenable 对象
+thenable 对象指的是具有 then 方法的对象,比如下面这个对象。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kd>let</span> <span class=nx>thenable</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>then</span><span class=o>:</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>resolve</span><span class=p>(</span><span class=mi>42</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><p>（3）参数不是具有 then 方法的对象,或根本就不是对象
+（4）不带有任何参数
+相当于 new Promise()
+需要注意的是,立即 resolve()的 <code>Promise</code> 对象,是在本轮“事件循环”（event loop）的结束时执行,而不是在下一轮“事件循环”的开始时。</p><a href=#7promisereject><h5 id=7promisereject><span class=hanchor arialabel=Anchor># </span>7.Promise.reject()</h5></a><a href=#8promisetry><h5 id=8promisetry><span class=hanchor arialabel=Anchor># </span>8Promise.try()</h5></a><p>由于 Promise.try 为所有操作提供了统一的处理机制,所以如果想用 then 方法管理流程,最好都用 Promise.try 包装一下。这样有许多好处,其中一点就是可以更好地管理异常。</p><p>解决了 <strong>try{}catch{}</strong> 无法处理异步错误的问题</p><a href=#手写-promise><h3 id=手写-promise><span class=hanchor arialabel=Anchor># </span>手写 promise</h3></a><a href=#简易实现><h4 id=简易实现><span class=hanchor arialabel=Anchor># </span>简易实现</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kd>function</span> <span class=nb>Promise</span><span class=p>(</span><span class=nx>excutro</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>self</span> <span class=o>=</span> <span class=k>this</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>self</span><span class=p>.</span><span class=nx>onResolved</span> <span class=o>=</span> <span class=p>[];</span>
+</span></span><span class=line><span class=cl>  <span class=nx>self</span><span class=p>.</span><span class=nx>onReject</span> <span class=o>=</span> <span class=p>[];</span>
+</span></span><span class=line><span class=cl>  <span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>=</span> <span class=s2>&#34;pedding&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kd>function</span> <span class=nx>resolve</span><span class=p>(</span><span class=nx>value</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>===</span> <span class=s2>&#34;pedding&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>=</span> <span class=s2>&#34;resolved&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>self</span><span class=p>.</span><span class=nx>value</span> <span class=o>=</span> <span class=nx>value</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>self</span><span class=p>.</span><span class=nx>onResolved</span><span class=p>.</span><span class=nx>forEach</span><span class=p>((</span><span class=nx>fn</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>fn</span><span class=p>(</span><span class=nx>value</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kd>function</span> <span class=nx>reject</span><span class=p>(</span><span class=nx>reson</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>===</span> <span class=s2>&#34;pedding&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>=</span> <span class=s2>&#34;reject&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>self</span><span class=p>.</span><span class=nx>reson</span> <span class=o>=</span> <span class=nx>reson</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=nx>self</span><span class=p>.</span><span class=nx>onResolved</span><span class=p>.</span><span class=nx>forEach</span><span class=p>((</span><span class=nx>fn</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>fn</span><span class=p>(</span><span class=nx>value</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=nx>excutro</span><span class=p>(</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#then><h4 id=then><span class=hanchor arialabel=Anchor># </span>then</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>then</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>resolved</span><span class=p>,</span> <span class=nx>rejected</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>self</span> <span class=o>=</span> <span class=k>this</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>promise2</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>resolved</span> <span class=o>=</span> <span class=k>typeof</span> <span class=nx>resolved</span> <span class=o>===</span> <span class=s2>&#34;function&#34;</span> <span class=o>?</span> <span class=nx>resolved</span> <span class=o>:</span> <span class=p>(</span><span class=nx>val</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=nx>val</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>===</span> <span class=s2>&#34;resolved&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=nx>promise2</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>Promise</span><span class=p>((</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>x</span> <span class=o>=</span> <span class=nx>resolved</span><span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>value</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>x</span> <span class=k>instanceof</span> <span class=nb>Promise</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>x</span> <span class=o>=</span> <span class=nx>x</span><span class=p>.</span><span class=nx>then</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=nx>resolve</span><span class=p>(</span><span class=nx>x</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span> <span class=k>catch</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>reject</span><span class=p>(</span><span class=nx>e</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}));</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>stauts</span> <span class=o>===</span> <span class=s2>&#34;pedding&#34;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=nx>promise2</span> <span class=o>=</span> <span class=k>new</span> <span class=nb>Promise</span><span class=p>((</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>self</span><span class=p>.</span><span class=nx>onResolved</span><span class=p>.</span><span class=nx>push</span><span class=p>(</span><span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=k>try</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>x</span> <span class=o>=</span> <span class=nx>resolved</span><span class=p>(</span><span class=nx>self</span><span class=p>.</span><span class=nx>value</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>x</span> <span class=k>instanceof</span> <span class=nb>Promise</span><span class=p>)</span> <span class=nx>x</span> <span class=o>=</span> <span class=nx>x</span><span class=p>.</span><span class=nx>then</span><span class=p>(</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span> <span class=k>catch</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>reject</span><span class=p>(</span><span class=nx>e</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span> <span class=k>catch</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>reject</span><span class=p>(</span><span class=nx>e</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}));</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#all><h4 id=all><span class=hanchor arialabel=Anchor># </span>all</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>all</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>promiseArr</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>index</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kd>let</span> <span class=nx>result</span> <span class=o>=</span> <span class=p>[];</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=k>new</span> <span class=nx>MyPromise</span><span class=p>((</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>promiseArr</span><span class=p>.</span><span class=nx>forEach</span><span class=p>((</span><span class=nx>p</span><span class=p>,</span> <span class=nx>i</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=c1>//Promise.resolve(p)用于处理传入值不为Promise的情况
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nx>MyPromise</span><span class=p>.</span><span class=nx>resolve</span><span class=p>(</span><span class=nx>p</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=nx>val</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>index</span><span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>          <span class=nx>result</span><span class=p>[</span><span class=nx>i</span><span class=p>]</span> <span class=o>=</span> <span class=nx>val</span><span class=p>;</span> <span class=c1>//所有then执行后, resolve结果
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=k>if</span> <span class=p>(</span><span class=nx>index</span> <span class=o>===</span> <span class=nx>promiseArr</span><span class=p>.</span><span class=nx>length</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nx>resolve</span><span class=p>(</span><span class=nx>result</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>          <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=nx>err</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>reject</span><span class=p>(</span><span class=nx>err</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> <span class=c1>//有一个Promise被reject时,MyPromise的状态变为reject
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#race><h4 id=race><span class=hanchor arialabel=Anchor># </span>race</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>race</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>promiseArr</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=k>new</span> <span class=nx>MyPromise</span><span class=p>((</span><span class=nx>resolve</span><span class=p>,</span> <span class=nx>reject</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//同时执行Promise,如果有一个Promise的状态发生改变,就变更新MyPromise的状态
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>for</span> <span class=p>(</span><span class=kd>let</span> <span class=nx>p</span> <span class=k>of</span> <span class=nx>promiseArr</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>MyPromise</span><span class=p>.</span><span class=nx>resolve</span><span class=p>(</span><span class=nx>p</span><span class=p>).</span><span class=nx>then</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=c1>//Promise.resolve(p)用于处理传入值不为Promise的情况
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>(</span><span class=nx>value</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>resolve</span><span class=p>(</span><span class=nx>value</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>},</span> <span class=c1>//注意这个resolve是上边new MyPromise的
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=p>(</span><span class=nx>err</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=nx>reject</span><span class=p>(</span><span class=nx>err</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#stop><h4 id=stop><span class=hanchor arialabel=Anchor># </span>stop</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>cancel</span> <span class=o>=</span> <span class=nb>Promise</span><span class=p>.</span><span class=nx>stop</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=k>new</span> <span class=nb>Promise</span><span class=p>(</span><span class=kd>function</span> <span class=p>()</span> <span class=p>{});</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#done><h4 id=done><span class=hanchor arialabel=Anchor># </span>done</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nb>Promise</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>done</span> <span class=o>=</span> <span class=kd>function</span> <span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=k>this</span><span class=p>.</span><span class=k>catch</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 此处一定要确保这个函数不能再出错
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>console</span><span class=p>.</span><span class=nx>error</span><span class=p>(</span><span class=nx>e</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#出错时><h4 id=出错时><span class=hanchor arialabel=Anchor># </span>出错时</h4></a><p>出错时,是用 throw new Error()还是用 return Promise.reject(new Error())呢？</p><p>性能方面,throw new Error()会使代码进入 catch 块里的逻辑</p><p>而使用 Promise.reject(new Error()),则需要构造一个新的 Promise 对象（里面包含 2 个数组,4 个函数：resolve/reject,onResolved/onRejected）,也会花费一定的时间和内存</p><p>综上,我觉得在 Promise 里发现显式的错误后,用 throw 抛出错误会比较好,而不是显式的构造一个被 reject 的 Promise 对象。</p></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>反向链接</h3><ul class=backlinks><li><a href=/EventLoop/ data-ctx=Promise data-src=/EventLoop class=internal-link></a></li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>内部链接关系图</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://ob.tianzhongs.ml/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><hr><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js></script><script src=alittlejs/md5.min.js></script><div id=gitalk-container></div><script>var gitalk=new Gitalk({clientID:"1a90dd4010f13d9e2b6a",clientSecret:"2b627f0d32eac2004d2abd8f0d143905bf1f50be",repo:"ObPublish",owner:"chelseachen007",admin:["chelseachen007"],id:location.href,distractionFreeMode:!1});gitalk.render("gitalk-container")</script><center><script>var caution=!1,now,visits;function setCookie(e,t,n,s,o,a){var i=e+"="+escape(t)+(n?"; expires="+n.toGMTString():"")+(s?"; path="+s:"")+(o?"; domain="+o:"")+(a?"; secure":"");!caution||(e+"="+escape(t)).length<=4e3?document.cookie=i:confirm("Cookie exceeds 4KB and will be cut!")&&(document.cookie=i)}function getCookie(s){var e=s+"=",n,t=document.cookie.indexOf(e);return t==-1?null:(n=document.cookie.indexOf(";",t+e.length),n==-1&&(n=document.cookie.length),unescape(document.cookie.substring(t+e.length,n)))}function deleteCookie(e,t,n){getCookie(e)&&(document.cookie=e+"="+(t?"; path="+t:"")+(n?"; domain="+n:"")+"; expires=Thu, 01-Jan-70 00:00:01 GMT")}function fixDate(e){var n=new Date(0),t=n.getTime();t>0&&e.setTime(e.getTime()-t)}now=new Date,fixDate(now),now.setTime(now.getTime()+730*24*60*60*1e3),visits=getCookie("counter"),visits?visits=parseInt(visits)+1:visits=1,setCookie("counter",visits,now),document.write("<font size=2>👋访问量："+visits+"")</script></center></div></body></html>

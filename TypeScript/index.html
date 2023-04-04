@@ -1,0 +1,471 @@
+<!doctype html><html lang=en><head><script async defer data-website-id=08a754c4-6690-46d7-bb80-8ff93cfa232f src=https://umami.oldwinter.top/umami.js></script><meta charset=utf-8><meta name=description content="TypeScript 基础类型 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17  // 常见原始类型: string,number,boolean,undefined,null,symbol let var1: string; // 类型注解  // 编译器类型推断可省略这个语法 let var2 = true; // 类型数组 let arr: string[]; // 函数中的类型约束 // 函数中的类型约束 function greet(person: string): string { return 'hello, ' + person; } // void类型，常用于没有返回值的函数 function warn(): void {}   类型注释 1 2 3 4 5 6 7 8 9  interface IProps { /** * logo的地址 */ logo?"><title>🌿知识花园🌸</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://ob.tianzhongs.ml//icon.png><link href=https://ob.tianzhongs.ml/styles.b3e1e36b0403ac565c9392b3e23ef3b6.min.css rel=stylesheet><link href=https://ob.tianzhongs.ml/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://ob.tianzhongs.ml/js/darkmode.39c2c88b3447f5b3d88347763905ade7.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/util.9825137f5e7825e8553c68ce39ac9e44.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://ob.tianzhongs.ml/js/popover.abe6a51cc7138c5dff00f151dd627ad1.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://ob.tianzhongs.ml/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const BASE_URL="https://ob.tianzhongs.ml/",fetchData=Promise.all([fetch("https://ob.tianzhongs.ml/indices/linkIndex.7799b8fde620b5dfe0ea73ebfefe392a.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://ob.tianzhongs.ml/indices/contentIndex.74a337d352c0976cbffba24c809f927f.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addCollapsibleCallouts(),initPopover("https://ob.tianzhongs.ml",!0,!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://ob.tianzhongs.ml",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],throwOnError:!1})}</script><script>window.Million={navigate:e=>window.location.href=e,prefetch:()=>{}},window.addEventListener("DOMContentLoaded",()=>{init(),render()})</script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-11MD77L81V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-11MD77L81V",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=search placeholder=支持标题及全文搜索...><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://ob.tianzhongs.ml/js/full-text-search.24827f874defbbc6d529926cbfcfb493.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://ob.tianzhongs.ml/>🌿知识花园🌸</a></h1><div class=spacer></div><div id=search-icon><p>search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><p class=meta>最近编辑于
+Unknown</p><ul class=tags></ul><aside class=mainTOC><details><summary>目录</summary><nav id=TableOfContents><ol><li><ol><li></li></ol></li><li><a href=#class>Class</a></li><li><a href=#枚举类型>枚举类型</a><ol><li><a href=#数字枚举>数字枚举</a></li><li><a href=#异构--字符串枚举>异构 | 字符串枚举</a></li></ol></li><li><a href=#接口interface>接口(interface)</a><ol><li><a href=#继承>继承</a></li><li><a href=#与-type-异同>与 type 异同</a></li></ol></li><li><a href=#泛型>泛型</a><ol><li></li></ol></li><li><a href=#设计工具类型>设计工具类型</a><ol><li><a href=#diff>diff</a></li><li><a href=#part>Part</a></li></ol></li><li><a href=#typescript-装饰器>TypeScript 装饰器</a><ol><li><a href=#装饰器是什么>装饰器是什么</a></li><li><a href=#装饰器的分类>装饰器的分类</a></li><li><a href=#装饰器使用>装饰器使用</a></li></ol></li><li><a href=#react中的运用>React中的运用</a></li><li><a href=#compileroptions-选项>compilerOptions 选项</a></li></ol></nav></details></aside><a href=#typescript><h1 id=typescript><span class=hanchor arialabel=Anchor># </span>TypeScript</h1></a><a href=#基础类型><h4 id=基础类型><span class=hanchor arialabel=Anchor># </span>基础类型</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-TS data-lang=TS><span class=line><span class=cl><span class=c1>// 常见原始类型: string,number,boolean,undefined,null,symbol
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>let</span> <span class=nx>var1</span>: <span class=kt>string</span><span class=p>;</span> <span class=c1>// 类型注解
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl><span class=c1>// 编译器类型推断可省略这个语法
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>let</span> <span class=nx>var2</span> <span class=o>=</span> <span class=kc>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 类型数组
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>let</span> <span class=nx>arr</span>: <span class=kt>string</span><span class=p>[];</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 函数中的类型约束
+</span></span></span><span class=line><span class=cl><span class=c1>// 函数中的类型约束
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>greet</span><span class=p>(</span><span class=nx>person</span>: <span class=kt>string</span><span class=p>)</span><span class=o>:</span> <span class=kt>string</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=s1>&#39;hello, &#39;</span> <span class=o>+</span> <span class=nx>person</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// void类型，常用于没有返回值的函数
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>warn</span><span class=p>()</span><span class=o>:</span> <span class=k>void</span> <span class=p>{}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#类型注释><h4 id=类型注释><span class=hanchor arialabel=Anchor># </span>类型注释</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>interface</span> <span class=nx>IProps</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=cm>/**
+</span></span></span><span class=line><span class=cl><span class=cm>     * logo的地址
+</span></span></span><span class=line><span class=cl><span class=cm>     */</span>
+</span></span><span class=line><span class=cl>    <span class=nx>logo?</span>: <span class=kt>string</span>
+</span></span><span class=line><span class=cl>    <span class=nx>className?</span>: <span class=kt>string</span>
+</span></span><span class=line><span class=cl>    <span class=nx>alt?</span>: <span class=kt>string</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// 在使用这样的注释以后,同事在查询这个参数时就能看到这段注释
+</span></span></span></code></pre></td></tr></table></div></div><a href=#类型断言><h4 id=类型断言><span class=hanchor arialabel=Anchor># </span>类型断言</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kd>let</span> <span class=nx>strLength</span>: <span class=kt>number</span> <span class=o>=</span> <span class=p>(&lt;</span><span class=nt>string</span><span class=p>&gt;</span><span class=nx>someValue</span><span class=p>).</span><span class=nx>length</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kd>let</span> <span class=nx>strLength</span>: <span class=kt>number</span> <span class=o>=</span> <span class=p>(</span><span class=nx>someValue</span> <span class=kr>as</span> <span class=kt>string</span><span class=p>).</span><span class=nx>length</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>//上面两种都是类型断言写法
+</span></span></span></code></pre></td></tr></table></div></div><a href=#非空断言><h4 id=非空断言><span class=hanchor arialabel=Anchor># </span>非空断言</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kd>function</span> <span class=nx>addFeatur</span><span class=p>(</span><span class=nx>e</span>: <span class=kt>KeyboardEvent</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>inp</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>taget</span> <span class=kr>as</span> <span class=nx>HTMLInputElement</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kr>const</span> <span class=nx>inp</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>taget</span><span class=o>!</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#类型别名><h4 id=类型别名><span class=hanchor arialabel=Anchor># </span>类型别名</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=c1>// 可以用下面这样方式定义对象类型
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>const</span> <span class=nx>objType</span><span class=o>:</span> <span class=p>{</span> <span class=nx>foo</span>: <span class=kt>string</span><span class=p>;</span> <span class=nx>bar</span>: <span class=kt>string</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>// 使用type定义类型别名，使用更便捷，还能复用
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>type</span> <span class=nx>Foobar</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>foo</span>: <span class=kt>string</span><span class=p>;</span> <span class=nx>bar</span>: <span class=kt>string</span> <span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#联合类型><h4 id=联合类型><span class=hanchor arialabel=Anchor># </span>联合类型</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kd>let</span> <span class=nx>features</span>: <span class=kt>Features</span><span class=p>[]</span> <span class=o>|</span> <span class=kc>null</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#交叉类型><h4 id=交叉类型><span class=hanchor arialabel=Anchor># </span>交叉类型</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>type</span> <span class=nx>First</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>first</span>: <span class=kt>number</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=kr>type</span> <span class=nx>Secord</span> <span class=o>=</span> <span class=p>{</span> <span class=nx>secord</span>: <span class=kt>string</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=kr>type</span> <span class=nx>third</span> <span class=o>=</span> <span class=nx>First</span> <span class=o>&amp;</span> <span class=nx>Secord</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p>为了分离类型，比如前端类型和后端返回的类型应该分开定义后合并</p><a href=#合起来如果有同-key类型不一样怎么处理的><h5 id=合起来如果有同-key类型不一样怎么处理的><span class=hanchor arialabel=Anchor># </span>合起来，如果有同 key，类型不一样，怎么处理的?</h5></a><a href=#重载><h4 id=重载><span class=hanchor arialabel=Anchor># </span>重载</h4></a><p>以函数参数数量或者类型，或者返回值的类型区分多个同名函数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=c1>// 重载：以函数参数数量或者类型，或者返回值的类型区分多个同名函数
+</span></span></span><span class=line><span class=cl><span class=c1>// 先声明，再实现
+</span></span></span><span class=line><span class=cl><span class=c1>// 重载1
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>watch</span><span class=p>(</span><span class=nx>cb1</span><span class=o>:</span> <span class=p>()</span> <span class=o>=&gt;</span> <span class=k>void</span><span class=p>)</span><span class=o>:</span> <span class=k>void</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// 重载2
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>watch</span><span class=p>(</span><span class=nx>cb1</span><span class=o>:</span> <span class=p>()</span> <span class=o>=&gt;</span> <span class=k>void</span><span class=p>,</span> <span class=nx>cb2</span><span class=o>:</span> <span class=p>(</span><span class=nx>v1</span>: <span class=kt>any</span><span class=p>,</span> <span class=nx>v2</span>: <span class=kt>any</span><span class=p>)</span> <span class=o>=&gt;</span> <span class=k>void</span><span class=p>)</span><span class=o>:</span> <span class=k>void</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>// 实现
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kd>function</span> <span class=nx>watch</span><span class=p>(</span><span class=nx>cb1</span><span class=o>:</span> <span class=p>()</span> <span class=o>=&gt;</span> <span class=k>void</span><span class=p>,</span> <span class=nx>cb2</span><span class=o>?:</span> <span class=p>(</span><span class=nx>v1</span>: <span class=kt>any</span><span class=p>,</span> <span class=nx>v2</span>: <span class=kt>any</span><span class=p>)</span> <span class=o>=&gt;</span> <span class=k>void</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=p>(</span><span class=nx>cb2</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;执行重载2&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=s2>&#34;执行重载1&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>watch</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><p><code>Redux</code> 的
+<a href=https://github.com/reduxjs/redux/blob/26f216e066a2a679d3cae4fb1a5c4e5d15e9fac6/src/compose.ts#L16 rel=noopener>compose</a>就是运用大量函数重载的典型案例</p><p><img src=https://i.loli.net/2021/04/28/qJKeZMywG7oNsaW.png width=auto alt=image-20210428110817173></p><a href=#声明文件><h4 id=声明文件><span class=hanchor arialabel=Anchor># </span>声明文件</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-TS data-lang=TS><span class=line><span class=cl><span class=c1>// shims-vue.d.ts
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>import</span> <span class=nx>Vue</span> <span class=kr>from</span> <span class=s2>&#34;vue&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kr>import</span> <span class=p>{</span> <span class=nx>AxiosInstance</span> <span class=p>}</span> <span class=kr>from</span> <span class=s2>&#34;axios&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=kr>declare</span> <span class=nx>module</span> <span class=s2>&#34;vue/types/vue&#34;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>interface</span> <span class=nx>Vue</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>$axios</span>: <span class=kt>AxiosInstance</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#class><h2 id=class><span class=hanchor arialabel=Anchor># </span>Class</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=c1>// 03-class.ts
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>class</span> <span class=nx>Parent</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>private</span> <span class=nx>_foo</span> <span class=o>=</span> <span class=s2>&#34;foo&#34;</span><span class=p>;</span> <span class=c1>// 私有属性，不能在类的外部访问
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kr>protected</span> <span class=nx>bar</span> <span class=o>=</span> <span class=s2>&#34;bar&#34;</span><span class=p>;</span> <span class=c1>// 保护属性，可以在子类中访问
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>// 参数属性：构造函数参数加修饰符，能够定义为成员属性
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kr>constructor</span><span class=p>(</span><span class=kr>public</span> <span class=nx>tua</span> <span class=o>=</span> <span class=s2>&#34;tua&#34;</span><span class=p>)</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// 方法也有修饰符
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kr>private</span> <span class=nx>someMethod() {</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=c1>// 存取器：属性方式访问，可添加额外逻辑，控制读写性
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kr>get</span> <span class=nx>foo() {</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=k>this</span><span class=p>.</span><span class=nx>_foo</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=kr>set</span> <span class=nx>foo</span><span class=p>(</span><span class=nx>val</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>_foo</span> <span class=o>=</span> <span class=nx>val</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#枚举类型><h2 id=枚举类型><span class=hanchor arialabel=Anchor># </span>枚举类型</h2></a><a href=#数字枚举><h3 id=数字枚举><span class=hanchor arialabel=Anchor># </span>数字枚举</h3></a><p>当我们声明一个枚举类型是,虽然没有给它们赋值,但是它们的值其实是默认的数字类型,而且默认从0开始依次累加:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=kr>enum</span> <span class=nx>Direction</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Up</span> <span class=o>=</span> <span class=mi>10</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Down</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Left</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Right</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>Direction</span><span class=p>.</span><span class=nx>Up</span><span class=p>,</span> <span class=nx>Direction</span><span class=p>.</span><span class=nx>Down</span><span class=p>,</span> <span class=nx>Direction</span><span class=p>.</span><span class=nx>Left</span><span class=p>,</span> <span class=nx>Direction</span><span class=p>.</span><span class=nx>Right</span><span class=p>);</span> <span class=c1>// 10 11 12 13
+</span></span></span></code></pre></td></tr></table></div></div><a href=#异构--字符串枚举><h3 id=异构--字符串枚举><span class=hanchor arialabel=Anchor># </span>异构 | 字符串枚举</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=kr>enum</span> <span class=nx>BooleanLikeHeterogeneousEnum</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>No</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nx>Yes</span> <span class=o>=</span> <span class=s2>&#34;YES&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#接口interface><h2 id=接口interface><span class=hanchor arialabel=Anchor># </span>接口(interface)</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>interface</span> <span class=nx>User</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>name?</span>: <span class=kt>string</span> <span class=c1>// 可选属性
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>age</span>: <span class=kt>number</span>  <span class=c1>// 必填属性
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kr>readonly</span> <span class=nx>isMale</span>: <span class=kt>boolean</span>  <span class=c1>// 只读属性
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>say</span><span class=o>:</span> <span class=p>(</span><span class=nx>words</span>: <span class=kt>string</span><span class=p>)</span> <span class=o>=&gt;</span> <span class=kt>string</span>  <span class=c1>// 函数类型
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>[</span><span class=nx>propName</span>: <span class=kt>string</span><span class=p>]</span><span class=o>:</span> <span class=p>;</span>  <span class=c1>// 字符串索引
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#继承><h3 id=继承><span class=hanchor arialabel=Anchor># </span>继承</h3></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=c1>// 可同时继承多个接口
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>interface</span> <span class=nx>VIPUser</span> <span class=kr>extends</span> <span class=nx>User</span><span class=p>,</span> <span class=nx>SupperUser</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>broadcast</span><span class=o>:</span> <span class=p>()</span> <span class=o>=&gt;</span> <span class=k>void</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#与-type-异同><h3 id=与-type-异同><span class=hanchor arialabel=Anchor># </span>与 type 异同</h3></a><p>与 interface 相比，type 的特点如下：</p><ul><li>表达功能更强大，不局限于 object/class/function</li><li>要扩展已有 type 需要创建新 type，不可以重名</li><li>支持更复杂的类型操作
+基本上所有用 interface 表达的类型都有其等价的 type 表达。
+除了对外抛出的接口定义约束用的 interface，内部的类型都尽量用的 type。
+<a href=https://juejin.cn/post/6844903904140853255 rel=noopener>《TypeScript中高级应用与最佳实践》</a></li></ul><a href=#泛型><h2 id=泛型><span class=hanchor arialabel=Anchor># </span>泛型</h2></a><a href=#使用时机><h4 id=使用时机><span class=hanchor arialabel=Anchor># </span>使用时机：</h4></a><p>当你的函数，接口或者类：</p><ul><li>需要作用到很多类型的时候，</li><li>需要被用到很多地方的时候，</li></ul><a href=#泛型使用><h4 id=泛型使用><span class=hanchor arialabel=Anchor># </span>泛型使用</h4></a><p>可以作为一个动态参数传入，使类型使用更加灵活</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>interface</span> <span class=nx>Result</span><span class=p>&lt;</span><span class=nt>T</span><span class=p>&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>ok</span>: <span class=kt>0</span> <span class=o>|</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>data</span>: <span class=kt>T</span><span class=p>[];</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>getResult</span><span class=p>&lt;</span><span class=nt>T</span><span class=p>&gt;(</span><span class=nx>data</span>: <span class=kt>T</span><span class=p>)</span><span class=o>:</span> <span class=nx>Result</span><span class=p>&lt;</span><span class=nt>T</span><span class=p>&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=p>{</span> <span class=nx>ok</span>: <span class=kt>1</span><span class=p>,</span> <span class=nx>data</span><span class=o>:</span> <span class=p>[</span><span class=nx>data</span><span class=p>]</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nx>getResult</span><span class=p>&lt;</span><span class=nt>string</span><span class=p>&gt;(</span><span class=s2>&#34;1&#34;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#keyof><h4 id=keyof><span class=hanchor arialabel=Anchor># </span>keyof</h4></a><p><code>keyof</code> 操作符可以用来一个对象中的所有 key 值：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>interface</span> <span class=nx>Person</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nx>name</span>: <span class=kt>string</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nx>age</span>: <span class=kt>number</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>type</span> <span class=nx>K1</span> <span class=o>=</span> <span class=k>keyof</span> <span class=nx>Person</span><span class=p>;</span> <span class=c1>// &#34;name&#34; | &#34;age&#34;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>type</span> <span class=nx>K2</span> <span class=o>=</span> <span class=k>keyof</span> <span class=nx>Person</span><span class=p>[];</span> <span class=c1>// &#34;length&#34; | &#34;toString&#34; | &#34;pop&#34; | &#34;push&#34; | &#34;concat&#34; | &#34;join&#34;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>type</span> <span class=nx>K3</span> <span class=o>=</span> <span class=k>keyof</span> <span class=p>{</span> <span class=p>[</span><span class=nx>x</span>: <span class=kt>string</span><span class=p>]</span><span class=o>:</span> <span class=nx>Person</span> <span class=p>};</span> <span class=c1>// string | number
+</span></span></span></code></pre></td></tr></table></div></div><a href=#in><h4 id=in><span class=hanchor arialabel=Anchor># </span>in</h4></a><p><code>in</code> 用来遍历枚举类型：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>type Keys = &#34;a&#34; | &#34;b&#34; | &#34;c&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>type Obj =  {
+</span></span><span class=line><span class=cl>  [p in Keys]: any
+</span></span><span class=line><span class=cl>} // -&gt; { a: any, b: any, c: any }
+</span></span></code></pre></td></tr></table></div></div><a href=#ts-泛型工具-目前-16-种><h4 id=ts-泛型工具-目前-16-种><span class=hanchor arialabel=Anchor># </span><strong>TS 泛型工具</strong> (目前 16 种)</h4></a><p><a href=https://github.com/microsoft/TypeScript/blob/master/src/lib/es5.d.ts#L1431 rel=noopener>点击查看官方实现</a></p><ul><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype rel=noopener>Partial</a></li></ul><p>功能是将类型的属性**「变成可选」**。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>type</span> <span class=nx>Partial</span><span class=p>&lt;</span><span class=nt>T</span><span class=p>&gt;</span> <span class=o>=</span> <span class=p>{</span> <span class=p>[</span><span class=nx>P</span> <span class=k>in</span> <span class=k>keyof</span> <span class=nx>T</span><span class=p>]</span><span class=o>?:</span> <span class=nx>T</span><span class=p>[</span><span class=nx>P</span><span class=p>]</span> <span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype rel=noopener>Readonly</a></li></ul><p>功能是将类型的属性**「变成只读」**， 在属性前面增加 <code>readonly</code> 意思会将其变成只读。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>type</span> <span class=nx>Readonly</span><span class=p>&lt;</span><span class=nt>T</span><span class=p>&gt;</span> <span class=o>=</span> <span class=p>{</span> <span class=kr>readonly</span> <span class=p>[</span><span class=nx>P</span> <span class=k>in</span> <span class=k>keyof</span> <span class=nx>T</span><span class=p>]</span><span class=o>:</span> <span class=nx>T</span><span class=p>[</span><span class=nx>P</span><span class=p>]</span> <span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#recordkeystype rel=noopener>Record</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#picktype-keys rel=noopener>Pick</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#omittype-keys rel=noopener>Omit</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#excludetype-excludedunion rel=noopener>Exclude</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#extracttype-union rel=noopener>Extract</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#nonnullabletype rel=noopener>NonNullable</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#parameterstype rel=noopener>Parameters</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#constructorparameterstype rel=noopener>ConstructorParameters</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype rel=noopener>ReturnType</a></li></ul><p>功能是用来得到一个函数的返回值类型。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>type</span> <span class=nx>ReturnType</span><span class=p>&lt;</span><span class=nt>T</span> <span class=na>extends</span> <span class=err>(</span><span class=na>...args</span><span class=err>:</span> <span class=na>any</span><span class=err>[])</span> <span class=err>=</span><span class=p>&gt;</span> <span class=kt>any</span><span class=o>&gt;</span> <span class=o>=</span> <span class=nx>T</span> <span class=kr>extends</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>  <span class=p>...</span><span class=nx>args</span>: <span class=kt>any</span><span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=p>)</span> <span class=o>=&gt;</span> <span class=k>infer</span> <span class=nx>R</span>
+</span></span><span class=line><span class=cl>  <span class=o>?</span> <span class=nx>R</span>
+</span></span><span class=line><span class=cl>  : <span class=kt>any</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#instancetypetype rel=noopener>InstanceType</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#requiredtype rel=noopener>Required</a></li></ul><p>功能和<code>Partial</code> 相反，是将类型的属性**「变成必填」**， 这里的 <code>-</code>指的是去除。 <code>-?</code>意思就是去除可选，也就是必填啦。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kr>type</span> <span class=nx>Required</span><span class=p>&lt;</span><span class=nt>T</span><span class=p>&gt;</span> <span class=o>=</span> <span class=p>{</span> <span class=p>[</span><span class=nx>P</span> <span class=k>in</span> <span class=k>keyof</span> <span class=nx>T</span><span class=p>]</span><span class=o>-?:</span> <span class=nx>T</span><span class=p>[</span><span class=nx>P</span><span class=p>]</span> <span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#thisparametertypetype rel=noopener>ThisParameterType</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#omitthisparametertype rel=noopener>OmitThisParameter</a></li><li><a href=https://www.typescriptlang.org/docs/handbook/utility-types.html#thistypetype rel=noopener>ThisType</a></li></ul><a href=#设计工具类型><h2 id=设计工具类型><span class=hanchor arialabel=Anchor># </span>设计工具类型</h2></a><a href=#diff><h3 id=diff><span class=hanchor arialabel=Anchor># </span>diff</h3></a><p>Diff&lt;T, U>,我们要找出T类型中U不包含的部分:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>type</span> <span class=nx>R</span> <span class=o>=</span> <span class=nx>Diff</span><span class=o>&lt;</span><span class=s2>&#34;a&#34;</span> <span class=o>|</span> <span class=s2>&#34;b&#34;</span> <span class=o>|</span> <span class=s2>&#34;c&#34;</span> <span class=o>|</span> <span class=s2>&#34;d&#34;</span><span class=p>,</span> <span class=s2>&#34;a&#34;</span> <span class=o>|</span> <span class=s2>&#34;c&#34;</span> <span class=o>|</span> <span class=s2>&#34;f&#34;</span><span class=o>&gt;</span><span class=p>;</span>  <span class=c1>// &#34;b&#34; | &#34;d&#34;
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kr>type</span> <span class=nx>Diff</span><span class=p>&lt;</span><span class=nt>T</span><span class=err>,</span> <span class=na>U</span><span class=p>&gt;</span> <span class=o>=</span> <span class=nx>T</span> <span class=kr>extends</span> <span class=nx>U</span> <span class=o>?</span> <span class=kt>never</span> <span class=o>:</span> <span class=nx>T</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#part><h3 id=part><span class=hanchor arialabel=Anchor># </span>Part</h3></a><p>现在需要编写一个工具类型将interface中<strong>函数类型</strong>的<strong>名称</strong>取出来,</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>interface</span> <span class=nx>Part</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>id</span>: <span class=kt>number</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>name</span>: <span class=kt>string</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>subparts</span>: <span class=kt>Part</span><span class=p>[];</span>
+</span></span><span class=line><span class=cl>    <span class=nx>updatePart</span><span class=p>(</span><span class=nx>newName</span>: <span class=kt>string</span><span class=p>)</span><span class=o>:</span> <span class=k>void</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kr>type</span> <span class=nx>R</span> <span class=o>=</span> <span class=nx>FunctionPropertyNames</span><span class=p>&lt;</span><span class=nt>Part</span><span class=p>&gt;;</span> <span class=c1>// &#34;updatePart&#34;
+</span></span></span></code></pre></td></tr></table></div></div><a href=#typescript-装饰器><h2 id=typescript-装饰器><span class=hanchor arialabel=Anchor># </span>TypeScript 装饰器</h2></a><a href=#装饰器是什么><h3 id=装饰器是什么><span class=hanchor arialabel=Anchor># </span>装饰器是什么</h3></a><ul><li>它是一个表达式</li><li>该表达式被执行后，返回一个函数</li><li>函数的入参分别为 target、name 和 descriptor</li><li>执行该函数后，可能返回 descriptor 对象，用于配置 target 对象</li></ul><a href=#装饰器的分类><h3 id=装饰器的分类><span class=hanchor arialabel=Anchor># </span>装饰器的分类</h3></a><ul><li>类装饰器（Class decorators）</li><li>属性装饰器（Property decorators）</li><li>方法装饰器（Method decorators）</li><li>参数装饰器（Parameter decorators）</li></ul><p><strong>tsconfig.json</strong>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>  &#34;compilerOptions&#34;: {
+</span></span><span class=line><span class=cl>     &#34;target&#34;: &#34;ES5&#34;,
+</span></span><span class=line><span class=cl>     &#34;experimentalDecorators&#34;: true
+</span></span><span class=line><span class=cl>   }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><a href=#装饰器使用><h3 id=装饰器使用><span class=hanchor arialabel=Anchor># </span>装饰器使用</h3></a><a href=#类装饰器><h4 id=类装饰器><span class=hanchor arialabel=Anchor># </span>类装饰器</h4></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-ts data-lang=ts><span class=line><span class=cl><span class=kd>function</span> <span class=nx>Greeter</span><span class=p>(</span><span class=nx>greeting</span>: <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=k>return</span> <span class=kd>function</span><span class=p>(</span><span class=nx>target</span>: <span class=kt>Function</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>target</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>greet</span> <span class=o>=</span> <span class=kd>function</span><span class=p>()</span><span class=o>:</span> <span class=k>void</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>greeting</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>@Greeter</span><span class=p>(</span><span class=s2>&#34;Hello TS!&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=kr>class</span> <span class=nx>Greeting</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>constructor</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// 内部实现
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>let</span> <span class=nx>myGreeting</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Greeting</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=nx>myGreeting</span><span class=p>.</span><span class=nx>greet</span><span class=p>();</span> <span class=c1>// console output: &#39;Hello TS!&#39;;
+</span></span></span></code></pre></td></tr></table></div></div><a href=#方法装饰器><h4 id=方法装饰器><span class=hanchor arialabel=Anchor># </span>方法装饰器</h4></a><p>它接收三个参数：</p><ul><li>target: Object - 被装饰的类</li><li>propertyKey: string | symbol - 方法名</li><li>descriptor: TypePropertyDescript - 属性描述符</li></ul><a href=#react中的运用><h2 id=react中的运用><span class=hanchor arialabel=Anchor># </span>React中的运用</h2></a><p>对于 <code>input</code> 组件 <code>onChange</code> 中的事件，我们一般是这样声明的:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-typescript data-lang=typescript><span class=line><span class=cl><span class=kr>private</span> <span class=nx>updateValue</span><span class=p>(</span><span class=nx>e</span>: <span class=kt>React.ChangeEvent</span><span class=p>&lt;</span><span class=nt>HTMLInputElement</span><span class=p>&gt;)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>this</span><span class=p>.</span><span class=nx>setState</span><span class=p>({</span> <span class=nx>itemText</span>: <span class=kt>e.target.value</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=c1>// form表单 React.FormEvent&lt;HTMLFormElement&gt;
+</span></span></span></code></pre></td></tr></table></div></div><a href=#compileroptions-选项><h2 id=compileroptions-选项><span class=hanchor arialabel=Anchor># </span>compilerOptions 选项</h2></a><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>  &#34;compilerOptions&#34;: {
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    /* 基本选项 */
+</span></span><span class=line><span class=cl>    &#34;target&#34;: &#34;es5&#34;,                       // 指定 ECMAScript 目标版本: &#39;ES3&#39; (default), &#39;ES5&#39;, &#39;ES6&#39;/&#39;ES2015&#39;, &#39;ES2016&#39;, &#39;ES2017&#39;, or &#39;ESNEXT&#39;
+</span></span><span class=line><span class=cl>    &#34;module&#34;: &#34;commonjs&#34;,                  // 指定使用模块: &#39;commonjs&#39;, &#39;amd&#39;, &#39;system&#39;, &#39;umd&#39; or &#39;es2015&#39;
+</span></span><span class=line><span class=cl>    &#34;lib&#34;: [],                             // 指定要包含在编译中的库文件
+</span></span><span class=line><span class=cl>    &#34;allowJs&#34;: true,                       // 允许编译 javascript 文件
+</span></span><span class=line><span class=cl>    &#34;checkJs&#34;: true,                       // 报告 javascript 文件中的错误
+</span></span><span class=line><span class=cl>    &#34;jsx&#34;: &#34;preserve&#34;,                     // 指定 jsx 代码的生成: &#39;preserve&#39;, &#39;react-native&#39;, or &#39;react&#39;
+</span></span><span class=line><span class=cl>    &#34;declaration&#34;: true,                   // 生成相应的 &#39;.d.ts&#39; 文件
+</span></span><span class=line><span class=cl>    &#34;sourceMap&#34;: true,                     // 生成相应的 &#39;.map&#39; 文件
+</span></span><span class=line><span class=cl>    &#34;outFile&#34;: &#34;./&#34;,                       // 将输出文件合并为一个文件
+</span></span><span class=line><span class=cl>    &#34;outDir&#34;: &#34;./&#34;,                        // 指定输出目录
+</span></span><span class=line><span class=cl>    &#34;rootDir&#34;: &#34;./&#34;,                       // 用来控制输出目录结构 --outDir.
+</span></span><span class=line><span class=cl>    &#34;removeComments&#34;: true,                // 删除编译后的所有的注释
+</span></span><span class=line><span class=cl>    &#34;noEmit&#34;: true,                        // 不生成输出文件
+</span></span><span class=line><span class=cl>    &#34;importHelpers&#34;: true,                 // 从 tslib 导入辅助工具函数
+</span></span><span class=line><span class=cl>    &#34;isolatedModules&#34;: true,               // 将每个文件做为单独的模块 （与 &#39;ts.transpileModule&#39; 类似）.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    /* 严格的类型检查选项 */
+</span></span><span class=line><span class=cl>    &#34;strict&#34;: true,                        // 启用所有严格类型检查选项
+</span></span><span class=line><span class=cl>    &#34;noImplicitAny&#34;: true,                 // 在表达式和声明上有隐含的 any类型时报错
+</span></span><span class=line><span class=cl>    &#34;strictNullChecks&#34;: true,              // 启用严格的 null 检查
+</span></span><span class=line><span class=cl>    &#34;noImplicitThis&#34;: true,                // 当 this 表达式值为 any 类型的时候，生成一个错误
+</span></span><span class=line><span class=cl>    &#34;alwaysStrict&#34;: true,                  // 以严格模式检查每个模块，并在每个文件里加入 &#39;use strict&#39;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    /* 额外的检查 */
+</span></span><span class=line><span class=cl>    &#34;noUnusedLocals&#34;: true,                // 有未使用的变量时，抛出错误
+</span></span><span class=line><span class=cl>    &#34;noUnusedParameters&#34;: true,            // 有未使用的参数时，抛出错误
+</span></span><span class=line><span class=cl>    &#34;noImplicitReturns&#34;: true,             // 并不是所有函数里的代码都有返回值时，抛出错误
+</span></span><span class=line><span class=cl>    &#34;noFallthroughCasesInSwitch&#34;: true,    // 报告 switch 语句的 fallthrough 错误。（即，不允许 switch 的 case 语句贯穿）
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    /* 模块解析选项 */
+</span></span><span class=line><span class=cl>    &#34;moduleResolution&#34;: &#34;node&#34;,            // 选择模块解析策略： &#39;node&#39; (Node.js) or &#39;classic&#39; (TypeScript pre-1.6)
+</span></span><span class=line><span class=cl>    &#34;baseUrl&#34;: &#34;./&#34;,                       // 用于解析非相对模块名称的基目录
+</span></span><span class=line><span class=cl>    &#34;paths&#34;: {},                           // 模块名到基于 baseUrl 的路径映射的列表
+</span></span><span class=line><span class=cl>    &#34;rootDirs&#34;: [],                        // 根文件夹列表，其组合内容表示项目运行时的结构内容
+</span></span><span class=line><span class=cl>    &#34;typeRoots&#34;: [],                       // 包含类型声明的文件列表
+</span></span><span class=line><span class=cl>    &#34;types&#34;: [],                           // 需要包含的类型声明文件名列表
+</span></span><span class=line><span class=cl>    &#34;allowSyntheticDefaultImports&#34;: true,  // 允许从没有设置默认导出的模块中默认导入。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    /* Source Map Options */
+</span></span><span class=line><span class=cl>    &#34;sourceRoot&#34;: &#34;./&#34;,                    // 指定调试器应该找到 TypeScript 文件而不是源文件的位置
+</span></span><span class=line><span class=cl>    &#34;mapRoot&#34;: &#34;./&#34;,                       // 指定调试器应该找到映射文件而不是生成文件的位置
+</span></span><span class=line><span class=cl>    &#34;inlineSourceMap&#34;: true,               // 生成单个 soucemaps 文件，而不是将 sourcemaps 生成不同的文件
+</span></span><span class=line><span class=cl>    &#34;inlineSources&#34;: true,                 // 将代码与 sourcemaps 生成到一个文件中，要求同时设置了 --inlineSourceMap 或 --sourceMap 属性
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    /* 其他选项 */
+</span></span><span class=line><span class=cl>    &#34;experimentalDecorators&#34;: true,        // 启用装饰器
+</span></span><span class=line><span class=cl>    &#34;emitDecoratorMetadata&#34;: true          // 为装饰器提供元数据的支持
+</span></span><span class=line><span class=cl>  }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><a href=#typescript-学习资源><h1 id=typescript-学习资源><span class=hanchor arialabel=Anchor># </span><a href=/TypeScript-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90 rel=noopener class=internal-link data-src=/TypeScript-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90>TypeScript 学习资源</a></h1></a><p><a href=https://mp.weixin.qq.com/s/BJaJLZRfRn4dLzh4-zNWSg rel=noopener>https://mp.weixin.qq.com/s/BJaJLZRfRn4dLzh4-zNWSg</a></p></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>反向链接</h3><ul class=backlinks><li><a href=/%E5%89%8D%E7%AB%AF/ data-ctx=tTypeScript data-src=/%E5%89%8D%E7%AB%AF class=internal-link></a></li><li><a href=/Rome/ data-ctx=TypeScript data-src=/Rome class=internal-link></a></li><li><a href=/monorepo/ data-ctx=TypeScript data-src=/monorepo class=internal-link></a></li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>内部链接关系图</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://ob.tianzhongs.ml/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><hr><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css><script src=https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js></script><script src=alittlejs/md5.min.js></script><div id=gitalk-container></div><script>var gitalk=new Gitalk({clientID:"1a90dd4010f13d9e2b6a",clientSecret:"2b627f0d32eac2004d2abd8f0d143905bf1f50be",repo:"ObPublish",owner:"chelseachen007",admin:["chelseachen007"],id:location.href,distractionFreeMode:!1});gitalk.render("gitalk-container")</script><center><script>var caution=!1,now,visits;function setCookie(e,t,n,s,o,a){var i=e+"="+escape(t)+(n?"; expires="+n.toGMTString():"")+(s?"; path="+s:"")+(o?"; domain="+o:"")+(a?"; secure":"");!caution||(e+"="+escape(t)).length<=4e3?document.cookie=i:confirm("Cookie exceeds 4KB and will be cut!")&&(document.cookie=i)}function getCookie(s){var e=s+"=",n,t=document.cookie.indexOf(e);return t==-1?null:(n=document.cookie.indexOf(";",t+e.length),n==-1&&(n=document.cookie.length),unescape(document.cookie.substring(t+e.length,n)))}function deleteCookie(e,t,n){getCookie(e)&&(document.cookie=e+"="+(t?"; path="+t:"")+(n?"; domain="+n:"")+"; expires=Thu, 01-Jan-70 00:00:01 GMT")}function fixDate(e){var n=new Date(0),t=n.getTime();t>0&&e.setTime(e.getTime()-t)}now=new Date,fixDate(now),now.setTime(now.getTime()+730*24*60*60*1e3),visits=getCookie("counter"),visits?visits=parseInt(visits)+1:visits=1,setCookie("counter",visits,now),document.write("<font size=2>👋访问量："+visits+"")</script></center></div></body></html>
