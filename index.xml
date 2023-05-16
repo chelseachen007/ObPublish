@@ -938,6 +938,7 @@ How to？（如何将需求做成产品？） - （1）产品在什么平台，�
 小程序在思考什么 当年互联网还不成熟的时候，许多网页开发没有做好 [[XSS]] 和 [[CSRF]] 这样的漏洞保护，导致出现用户账户被盗用、财产被转移等问题。对于小程序来说，不仅需要对各种小程序进行内容的管控，同样需要给用户和开发者提供有安全保障的环境。
 小程序如何保障用户安全 比如，小程序提供了 &amp;lt;open-data&amp;gt; 组件，用于无须授权的情况下可展示用户的敏感信息（昵称、头像、性别、地理位置等），如果开发者直接通过 DOM API 获取到这些信息，意味着只要用户打开了这个小程序，在未授权的情况下自己的相关信息就会被盗取。
 我们能看到，很多风险都来自 JavaScript 脚本对网页中 DOM 的访问和操作。想要解决这个风险就得将 JavaScript 代码放置在没有浏览器环境的[[沙箱环境]]中运行。</description></item><item><title>小红书</title><link>https://note.xiaopang.fun/%E5%B0%8F%E7%BA%A2%E4%B9%A6/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/%E5%B0%8F%E7%BA%A2%E4%B9%A6/</guid><description>小红书 [[《爆款小红书：从零到百万粉丝的玩赚策略》]]
+引流 自用小红书100%安全的引流方法 - 飞书云文档
 参考文章 小红书底层逻辑和方法 小红书入门 钻戒文-实操变现千万 设计师-完整闭环分享 温州土老板 杉木-寻找精准客户 运营女超人子渝 ,0-8K 粉丝</description></item><item><title>小结</title><link>https://note.xiaopang.fun/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/</guid><description>迭代器模式无非就是循环访问聚合对象中的各个元素
 JavaSctipt 中已经有了对应的实现，forEach
 内部迭代器 内部迭代器在调用的时候非常方便，外界不用关心迭代器内部的实现，跟迭代器的交互也仅仅是一次初始调用，但这也刚好是内部迭代器的缺点。由于内部迭代器的迭代规则已经被提前规定，上面的 each 函数就无法同时迭代 2 个数组了。
