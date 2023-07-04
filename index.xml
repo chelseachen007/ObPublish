@@ -215,7 +215,8 @@ GitHub -Smart-connections</description></item><item><title>SMS</title><link>http
 也就是说，只有当整个页面所有组件hydrate完成后，页面中任一组件才能响应用户交互。
 Chrome LightHouse跑分中的 TTI（Time to Interactive，可交互时间）指标用于衡量页面变得完全可交互所需的时间。
 传统SSR架构的页面随着应用体积变大，TTI指标会持续走高。
-孤岛架构的目的就是为了优化SSR架构下TTI指标的问题。</description></item><item><title>SWC</title><link>https://note.xiaopang.fun/SWC/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/SWC/</guid><description>SWC SWC 创建于 2017 年，一个下一代快速开发的工具，是一个基于 [[Rust]] 的可扩展平台。[[Next.js]]、 Parcel 和 [[Deno]] 等工具，以及 Vercel、字节跳动、腾讯、Shopify 等公司都在使用它。
+孤岛架构的目的就是为了优化SSR架构下TTI指标的问题。</description></item><item><title>Supercharged Links</title><link>https://note.xiaopang.fun/Supercharged-Links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/Supercharged-Links/</guid><description> GitHub - mdelobelle/supercharged_links:
+Supercharged Links</description></item><item><title>SWC</title><link>https://note.xiaopang.fun/SWC/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/SWC/</guid><description>SWC SWC 创建于 2017 年，一个下一代快速开发的工具，是一个基于 [[Rust]] 的可扩展平台。[[Next.js]]、 Parcel 和 [[Deno]] 等工具，以及 Vercel、字节跳动、腾讯、Shopify 等公司都在使用它。
 SWC 可用于编译（compilation）、压缩（minification）、打包（bundling）等 —— 并且被设计成可扩展的。你可以调用它来执行代码转换（无论是内置的还是自定义的）。这些转换由更高维度的工具来运行，比如 [[Next.js]] 。</description></item><item><title>Text Generator</title><link>https://note.xiaopang.fun/Text-Generator/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/Text-Generator/</guid><description>Text Generator template功能很好用，其实就是直接引用别人整理好的一系列prompts，能够向gpt模型提出更好的问题，得到更好的回答。
 Obsidian 笔记助手 Text Generator
 如何使用 生成文本，快捷键：Ctrl + j 生成文本并使用元数据，快捷键：Ctrl + Alt + j
@@ -1765,4 +1766,4 @@ antd3 rc-form 高阶组件实现 form 表单</description></item><item><title>�
 [[英语学习]]
 [[问题思考框架]]
 其他不错的[[数字花园]] 我借鉴的： 🌿 oldwinterの数字花园</description></item><item><title>🗜 效率工具</title><link>https://note.xiaopang.fun/-%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/-%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/</guid><description>🗜 效率工具 比较好用的一些工具
-Mac Snipaste,截图工具，随意贴图，很方便 copilot，没有用过 Copilot 的程序员是不完美的，用了后按 Tab 比 cv 多 utools，很多实用的工具集，基本不用打开 google 翻译，json 之类的网站了 [[Obsidian]]，我的主力记笔记软件 [[Notion]],页面好看，database 型笔记软件，适合剪藏和收集</description></item></channel></rss>
+Mac Snipaste,截图工具，随意贴图，很方便 copilot，没有用过 Copilot 的程序员是不完美的，用了后按 Tab 比 cv 多 utools，很多实用的工具集，基本不用打开 google 翻译，json 之类的网站了 [[Obsidian]]，我的主力记笔记软件 [[Notion]],页面好看，database 型笔记软件，适合剪藏和收集 [[Picgo]], 自建图床</description></item></channel></rss>
