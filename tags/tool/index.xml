@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tool on</title><link>https://note.xiaopang.fun/tags/tool/</link><description>Recent content in tool on</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://note.xiaopang.fun/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Obsidian 是什么</title><link>https://note.xiaopang.fun/Obsidian/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/Obsidian/</guid><description>Obsidian 是什么 [[Obsidian常用的快捷键及作用]] 优缺点 优点 本地存储, 不用担心信息泄露 ^c7c3e1 纯 MD 写作，方便日后迁移 [[双向链接]]，做笔记的神器 类似 Vscode 的插件功能，功能可以无限扩展 可以进行分窗创作 缺点 无移动端/手机端 （这个对我来说不是刚需</description></item><item><title>Wrap</title><link>https://note.xiaopang.fun/Wrap/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/Wrap/</guid><description>Wrap 开箱即用的补全、推荐和纠错,和 copilot 很像
+cmd + P 调出命令行
+需要连接远程服务器 ， 命令行里输入 Save 或者# 调出 Session
+缺点 需要登录使用，并且收集隐私，底下推荐 [[终端工具#iTerm2]]
+但是我命令行用的并不多，就先不用了。
+参考资料 Warp：是时候改变你的命令行工具了 Warp下载链接</description></item></channel></rss>
