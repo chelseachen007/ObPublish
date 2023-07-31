@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head>
+    <title>Feeds of jie chen from Inoreader [https://www.inoreader.com]</title>
+  </head>
+  <body>
+    <outline text="少数派" title="少数派" type="rss" xmlUrl="https://sspai.com/feed" htmlUrl="http://sspai.com/feed"/>
+    <outline text="Growth Weekly Subscribers Archive Feed" title="Growth Weekly Subscribers Archive Feed" type="rss" xmlUrl="https://us6.campaign-archive.com/feed?u=e4582460499f4aadae1a90e2b&amp;id=d2c14f8a94" htmlUrl="https://us6.campaign-archive.com/feed?u=e4582460499f4aadae1a90e2b&amp;id=d2c14f8a94"/>
+    <outline text="Smashing Magazine" title="Smashing Magazine" type="rss" xmlUrl="https://www.smashingmagazine.com/feed/" htmlUrl="https://www.smashingmagazine.com/"/>
+    <outline text="财经" title="财经">
+      <outline text=" Nick Szabo:法律/加密学/科学史/金融学/计算机科学杂家" title=" Nick Szabo:法律/加密学/科学史/金融学/计算机科学杂家" type="rss" xmlUrl="https://unenumerated.blogspot.com/feeds/posts/default?alt=rss" htmlUrl="http://unenumerated.blogspot.com/"/>
+      <outline text="" title="" type="rss" xmlUrl="https://chuan.us/feed" htmlUrl="https://chuan.us/"/>
+      <outline text="莫大韭菜 的 bilibili 空间" title="莫大韭菜 的 bilibili 空间" type="rss" xmlUrl="https://rsshub.xiaopang.fun/bilibili/user/video/525121722" htmlUrl="https://space.bilibili.com/525121722"/>
+    </outline>
+    <outline text="知识管理" title="知识管理">
+      <outline text="遥行的得到主页 - 动态" title="遥行的得到主页 - 动态" type="rss" xmlUrl="https://rsshub.xiaopang.fun/dedao/user/35z49NXgYKw83aXLeYWxnpb0lEQLP2" htmlUrl="https://m.igetget.com/native/mine/account#/user/detail?enId=35z49NXgYKw83aXLeYWxnpb0lEQLP2"/>
+      <outline text="即凉 的 bilibili 空间" title="即凉 的 bilibili 空间" type="rss" xmlUrl="https://rsshub.xiaopang.fun/bilibili/user/video/628098275" htmlUrl="https://space.bilibili.com/628098275"/>
+      <outline text="L先生说" title="L先生说" type="rss" xmlUrl="https://feed.hamibot.com/api/feeds/614016631269c358aa10f5e3" htmlUrl="https://mp.weixin.qq.com/"/>
+    </outline>
+    <outline text="个人博客" title="个人博客">
+      <outline text="二丫讲梵" title="二丫讲梵" type="rss" xmlUrl="https://wiki.eryajf.net/feed.atom" htmlUrl="https://wiki.eryajf.net/"/>
+      <outline text="dwqs/blog Issues" title="dwqs/blog Issues" type="rss" xmlUrl="http://rsshub.xiaopang.fun/github/issue/dwqs/blog" htmlUrl="https://github.com/dwqs/blog/issues"/>
+      <outline text="Platform Thinking +" title="Platform Thinking +" type="rss" xmlUrl="https://pt.plus/rss/" htmlUrl="https://pt.plus/"/>
+      <outline text="明远的自留地" title="明远的自留地" type="rss" xmlUrl="https://mayandev.top/atom.xml" htmlUrl="https://mayandev.github.io/"/>
+      <outline text="阮一峰的网络日志" title="阮一峰的网络日志" type="rss" xmlUrl="http://www.ruanyifeng.com/blog/atom.xml" htmlUrl="http://www.ruanyifeng.com/blog/"/>
+      <outline text="小胡子哥的个人网站" title="小胡子哥的个人网站" type="rss" xmlUrl="https://www.barretlee.com/rss2.xml" htmlUrl="https://www.barretlee.com/"/>
+      <outline text="GeekPlux" title="GeekPlux" type="rss" xmlUrl="https://geekplux.com/atom.xml" htmlUrl="http://geekplux.com/"/>
+    </outline>
+    <outline text="前端" title="前端">
+      <outline text="支付宝体验科技" title="支付宝体验科技" type="rss" xmlUrl="http://rsshub.xiaopang.fun/zhihu/zhuanlan/c_1543658574504751104" htmlUrl="https://www.zhihu.com/column/c_1543658574504751104"/>
+      <outline text="SegmentFault腾讯新闻前端团队 最新的文章" title="SegmentFault腾讯新闻前端团队 最新的文章" type="rss" xmlUrl="https://segmentfault.com/feeds/blog/tnfe" htmlUrl="https://segmentfault.com/blog/tnfe"/>
+      <outline text="掘金专栏-阿里巴巴大淘宝技术" title="掘金专栏-阿里巴巴大淘宝技术" type="rss" xmlUrl="http://rsshub.xiaopang.fun/juejin/posts/395479919373991" htmlUrl="https://juejin.cn/user/395479919373991/posts"/>
+      <outline text="冴羽" title="冴羽" type="rss" xmlUrl="http://rsshub.xiaopang.fun/github/issue/mqyqingfeng/Blog" htmlUrl="https://github.com/mqyqingfeng/Blog/issues"/>
+      <outline text="前端精读" title="前端精读" type="rss" xmlUrl="https://github.com/ascoders/weekly/releases.atom" htmlUrl="https://github.com/ascoders/weekly/releases"/>
+      <outline text="TNT-Weekly" title="TNT-Weekly" type="rss" xmlUrl="https://github.com/tnfe/TNT-Weekly/commits.atom" htmlUrl="https://github.com/tnfe/TNT-Weekly/commits/master"/>
+      <outline text="Frontend Focus" title="Frontend Focus" type="rss" xmlUrl="https://frontendfoc.us/rss/" htmlUrl="https://frontendfoc.us/"/>
+      <outline text="InfoQ推荐" title="InfoQ推荐" type="rss" xmlUrl="https://rsshub.app/infoq/recommend" htmlUrl="https://www.infoq.cn/"/>
+      <outline text="Aotu.io" title="Aotu.io" type="rss" xmlUrl="https://aotu.io/atom.xml" htmlUrl="https://aotu.io/"/>
+      <outline text="奇舞周刊" title="奇舞周刊" type="rss" xmlUrl="https://weekly.75.team/rss" htmlUrl="https://weekly.75.team/"/>
+      <outline text="FEX 百度 Web 前端研发部" title="FEX 百度 Web 前端研发部" type="rss" xmlUrl="http://fex.baidu.com/feed.xml" htmlUrl="http://fex.baidu.com/"/>
+      <outline text="JavaScript Weekly" title="JavaScript Weekly" type="rss" xmlUrl="http://javascriptweekly.com/rss/" htmlUrl="https://javascriptweekly.com/"/>
+      <outline text="Taobao FED | 淘系前端团队" title="Taobao FED | 淘系前端团队" type="rss" xmlUrl="https://fed.taobao.org/atom.xml" htmlUrl="http://taobaofed.org/"/>
+      <outline text="Web前端 腾讯AlloyTeam  Blog | 愿景: 成为业界卓越的Web团队！" title="Web前端 腾讯AlloyTeam  Blog | 愿景: 成为业界卓越的Web团队！" type="rss" xmlUrl="http://www.alloyteam.com/feed/" htmlUrl="http://www.alloyteam.com/"/>
+      <outline text="奇虎360技术博客" title="奇虎360技术博客" type="rss" xmlUrl="http://blogs.360.cn/rss.html" htmlUrl="http://blogs.360.cn/"/>
+      <outline text="美团技术团队" title="美团技术团队" type="rss" xmlUrl="https://tech.meituan.com/feed/" htmlUrl="https://tech.meituan.com/feed/"/>
+    </outline>
+  </body>
+</opml>
