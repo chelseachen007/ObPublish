@@ -1266,7 +1266,11 @@ JavaScript 语言之中。运算块不一定要封装在 command.execute 方法�
 1926年提出薛定谔方程，为量子力学奠定了坚实的基础。提出薛定谔猫思想实验，试图证明量子力学在宏观条件下的不完备性。
 1933 年，因为“发现了在原子理论里很有用的新形式”，薛定谔和英国物理学家保罗·狄拉克共同获得了诺贝尔物理学奖，以表彰他们发现了薛定谔方程和狄拉克方程。
 薛定谔的猫 论文：《量子力学的现状》
-在论文的第 5 节，薛定谔描述了那个常被视为噩梦的猫实验。好，哥本哈根派说，在没有测量之前，一个粒子的状态模糊不清，处于各种可能性的混合叠加，是吧？比如一个放射性原子，它何时衰变是完全概率性的。只要没有观察，它便处于衰变/不衰变的叠加状态中，只有确实进行了测量，它才能随机选择一种状态出现。</description></item><item><title>基本资料</title><link>https://note.xiaopang.fun/%E7%8E%8B%E5%BE%B7%E5%8F%91-%E6%9C%AC3-p6/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/%E7%8E%8B%E5%BE%B7%E5%8F%91-%E6%9C%AC3-p6/</guid><description>基本资料 Xxx / 男/ 1995 / 本科 / 计算机科学与技术专业 / 3.5 年⼯作经验
+在论文的第 5 节，薛定谔描述了那个常被视为噩梦的猫实验。好，哥本哈根派说，在没有测量之前，一个粒子的状态模糊不清，处于各种可能性的混合叠加，是吧？比如一个放射性原子，它何时衰变是完全概率性的。只要没有观察，它便处于衰变/不衰变的叠加状态中，只有确实进行了测量，它才能随机选择一种状态出现。</description></item><item><title>埋点上报方式</title><link>https://note.xiaopang.fun/%E5%9F%8B%E7%82%B9%E4%B8%8A%E6%8A%A5%E6%96%B9%E5%BC%8F/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/%E5%9F%8B%E7%82%B9%E4%B8%8A%E6%8A%A5%E6%96%B9%E5%BC%8F/</guid><description>常见的埋点上报方式有
+ajax img Navigator.sendBeacon ajax 缺点： 一般而言，埋点域名并不是当前域名，因此请求会存在跨域风险，且如果ajax配置不正确可能会浏览器拦截。因此使用ajax这类请求并不是万全之策。
+image script，link，img就是我们上报的数据的最好对象，但推荐使用 img，因为如果需要请求script和link，我们需要将标签挂载到页面上。需要反复操作 dom，并且会阻塞渲染。
+注：通常埋点上报会使用gif图，合法的 GIF 只需要 43 个字节
+sendBeacon navigator.sendBeacon() 方法可用于通过 HTTP POST 将少量数据异步传输到 Web 服务器。</description></item><item><title>基本资料</title><link>https://note.xiaopang.fun/%E7%8E%8B%E5%BE%B7%E5%8F%91-%E6%9C%AC3-p6/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/%E7%8E%8B%E5%BE%B7%E5%8F%91-%E6%9C%AC3-p6/</guid><description>基本资料 Xxx / 男/ 1995 / 本科 / 计算机科学与技术专业 / 3.5 年⼯作经验
 ⼿机 (微信)： xxxxx / Email： x'x'x@foxxmail.com
 应聘职位：前端⼯程师
 个⼈概况 熟练掌握 ES6 ，对于 JS 闭包、原型、作⽤域链闭包等知识有深⼊理解 掌握 Vue 2.</description></item><item><title>基金经理说的视频搬运</title><link>https://note.xiaopang.fun/%E5%9F%BA%E9%87%91%E7%BB%8F%E7%90%86%E8%AF%B4%E7%9A%84%E8%A7%86%E9%A2%91%E6%90%AC%E8%BF%90/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/%E5%9F%BA%E9%87%91%E7%BB%8F%E7%90%86%E8%AF%B4%E7%9A%84%E8%A7%86%E9%A2%91%E6%90%AC%E8%BF%90/</guid><description>基金经理说的视频搬运 去哪搬运 1、youtube 上的内容
