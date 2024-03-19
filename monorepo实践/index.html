@@ -1,0 +1,143 @@
+<!doctype html><html lang=en><head><script async defer data-website-id=08a754c4-6690-46d7-bb80-8ff93cfa232f src=https://umami.oldwinter.top/umami.js></script><meta charset=utf-8><meta name=description content="monorepo 实践 使用环境：[[Volta]] 复用 packages：workspace 使用 monorepo 策略后，收益最大的两点是：
+  避免重复安装包，因此减少了磁盘空间的占用，并降低了构建时间；
+  内部代码可以彼此相互引用；
+为了实现前面提到的两点收益，您需要在代码中做三件事：
+  调整目录结构，将相互关联的项目放置在同一个目录，推荐命名为 packages；
+  在项目根目录里的 package."><title>monorepo 实践</title><meta name=viewport content="width=device-width,initial-scale=1"><link rel="shortcut icon" type=image/png href=https://note.xiaopang.fun//icon.png><link href=https://note.xiaopang.fun/styles.b3e1e36b0403ac565c9392b3e23ef3b6.min.css rel=stylesheet><link href=https://note.xiaopang.fun/styles/_light_syntax.86a48a52faebeaaf42158b72922b1c90.min.css rel=stylesheet id=theme-link><script src=https://note.xiaopang.fun/js/darkmode.660407930f154820c5998c99422c74bb.min.js></script>
+<script src=https://note.xiaopang.fun/js/util.9825137f5e7825e8553c68ce39ac9e44.min.js></script>
+<link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css integrity=sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js integrity=sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx crossorigin=anonymous></script>
+<script defer src=https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js integrity=sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR crossorigin=anonymous></script>
+<script src=https://unpkg.com/@floating-ui/core@0.7.3></script>
+<script src=https://unpkg.com/@floating-ui/dom@0.5.4></script>
+<script src=https://note.xiaopang.fun/js/popover.abe6a51cc7138c5dff00f151dd627ad1.min.js></script>
+<script src=https://note.xiaopang.fun/js/code-title.b35124ad8db0ba37162b886afb711cbc.min.js></script>
+<script src=https://note.xiaopang.fun/js/clipboard.c20857734e53a3fb733b7443879efa61.min.js></script>
+<script src=https://note.xiaopang.fun/js/callouts.7723cac461d613d118ee8bb8216b9838.min.js></script>
+<script>const BASE_URL="https://note.xiaopang.fun/",fetchData=Promise.all([fetch("https://note.xiaopang.fun/indices/linkIndex.98577872f04d02fe600a7014aeb20275.min.json").then(e=>e.json()).then(e=>({index:e.index,links:e.links})),fetch("https://note.xiaopang.fun/indices/contentIndex.4e2353b6e24cce727972262eb38cfaec.min.json").then(e=>e.json())]).then(([{index:e,links:t},n])=>({index:e,links:t,content:n})),render=()=>{const e=new URL(BASE_URL),t=e.pathname,n=window.location.pathname,s=t==n;addCopyButtons(),addCollapsibleCallouts(),initPopover("https://note.xiaopang.fun",!0,!0);const o=document.getElementById("footer");if(o){const e=document.getElementById("graph-container");if(!e)return requestAnimationFrame(render);e.textContent="";const t=s&&!1;drawGraph("https://note.xiaopang.fun",t,[{"/moc":"#4388cc"}],t?{centerForce:1,depth:-1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.5,linkDistance:1,opacityScale:3,repelForce:1,scale:1.4}:{centerForce:1,depth:1,enableDrag:!0,enableLegend:!1,enableZoom:!0,fontSize:.6,linkDistance:1,opacityScale:3,repelForce:2,scale:1.2})}},init=(e=document)=>{addCopyButtons(),addTitleToCodeBlocks(),renderMathInElement(e.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}],throwOnError:!1})}</script><script>window.Million={navigate:e=>window.location.href=e,prefetch:()=>{}},window.addEventListener("DOMContentLoaded",()=>{init(),render()})</script></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-11MD77L81V"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-11MD77L81V",{anonymize_ip:!1})}</script><body><div id=search-container><div id=search-space><input autocomplete=off id=search-bar name=search type=text aria-label=search placeholder=支持标题及全文搜索...><div id=results-container></div></div></div><script src=https://cdn.jsdelivr.net/npm/flexsearch@0.7.21/dist/flexsearch.bundle.js integrity="sha256-i3A0NZGkhsKjVMzFxv3ksk0DZh3aXqu0l49Bbh0MdjE=" crossorigin=anonymous defer></script>
+<script defer src=https://note.xiaopang.fun/js/full-text-search.24827f874defbbc6d529926cbfcfb493.min.js></script><div class=singlePage><header><h1 id=page-title><a href=https://note.xiaopang.fun/>🌿数字花园🌸</a></h1><div class=spacer></div><div id=search-icon><p>search</p><svg tabindex="0" aria-labelledby="title desc" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title id="title">Search Icon</title><desc id="desc">Icon to open search</desc><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"/><circle cx="8" cy="8" r="7"/></g></svg></div><div class=darkmode><input class=toggle id=darkmode-toggle type=checkbox tabindex=-1>
+<label id=toggle-label-light for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="dayIcon" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35"><title>Light Mode</title><path d="M6 17.5C6 16.672 5.328 16 4.5 16h-3C.672 16 0 16.672.0 17.5S.672 19 1.5 19h3C5.328 19 6 18.328 6 17.5zM7.5 26c-.414.0-.789.168-1.061.439l-2 2C4.168 28.711 4 29.086 4 29.5 4 30.328 4.671 31 5.5 31c.414.0.789-.168 1.06-.44l2-2C8.832 28.289 9 27.914 9 27.5 9 26.672 8.329 26 7.5 26zm10-20C18.329 6 19 5.328 19 4.5v-3C19 .672 18.329.0 17.5.0S16 .672 16 1.5v3C16 5.328 16.671 6 17.5 6zm10 3c.414.0.789-.168 1.06-.439l2-2C30.832 6.289 31 5.914 31 5.5 31 4.672 30.329 4 29.5 4c-.414.0-.789.168-1.061.44l-2 2C26.168 6.711 26 7.086 26 7.5 26 8.328 26.671 9 27.5 9zM6.439 8.561C6.711 8.832 7.086 9 7.5 9 8.328 9 9 8.328 9 7.5c0-.414-.168-.789-.439-1.061l-2-2C6.289 4.168 5.914 4 5.5 4 4.672 4 4 4.672 4 5.5c0 .414.168.789.439 1.06l2 2.001zM33.5 16h-3c-.828.0-1.5.672-1.5 1.5s.672 1.5 1.5 1.5h3c.828.0 1.5-.672 1.5-1.5S34.328 16 33.5 16zM28.561 26.439C28.289 26.168 27.914 26 27.5 26c-.828.0-1.5.672-1.5 1.5.0.414.168.789.439 1.06l2 2C28.711 30.832 29.086 31 29.5 31c.828.0 1.5-.672 1.5-1.5.0-.414-.168-.789-.439-1.061l-2-2zM17.5 29c-.829.0-1.5.672-1.5 1.5v3c0 .828.671 1.5 1.5 1.5s1.5-.672 1.5-1.5v-3C19 29.672 18.329 29 17.5 29zm0-22C11.71 7 7 11.71 7 17.5S11.71 28 17.5 28 28 23.29 28 17.5 23.29 7 17.5 7zm0 18c-4.136.0-7.5-3.364-7.5-7.5s3.364-7.5 7.5-7.5 7.5 3.364 7.5 7.5S21.636 25 17.5 25z"/></svg></label><label id=toggle-label-dark for=darkmode-toggle tabindex=-1><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="nightIcon" viewBox="0 0 100 100" style="enable-background='new 0 0 100 100'"><title>Dark Mode</title><path d="M96.76 66.458c-.853-.852-2.15-1.064-3.23-.534-6.063 2.991-12.858 4.571-19.655 4.571C62.022 70.495 50.88 65.88 42.5 57.5 29.043 44.043 25.658 23.536 34.076 6.47c.532-1.08.318-2.379-.534-3.23-.851-.852-2.15-1.064-3.23-.534-4.918 2.427-9.375 5.619-13.246 9.491-9.447 9.447-14.65 22.008-14.65 35.369.0 13.36 5.203 25.921 14.65 35.368s22.008 14.65 35.368 14.65c13.361.0 25.921-5.203 35.369-14.65 3.872-3.871 7.064-8.328 9.491-13.246C97.826 68.608 97.611 67.309 96.76 66.458z"/></svg></label></div></header><article><h1>monorepo 实践</h1><p class=meta>最近编辑于
+Mar 19, 2024</p><ul class=tags></ul><aside class=mainTOC><details><summary>目录</summary><nav id=TableOfContents><ol><li><a href=#使用环境volta>使用环境：[[Volta]]</a></li><li><a href=#复用-packagesworkspace>复用 packages：workspace</a></li><li><a href=#统一配置>统一配置</a><ol><li><a href=#typescript>TypeScript</a></li><li><a href=#eslint>[[Eslint]]</a></li><li><a href=#babel>Babel</a></li><li><a href=#统一命令脚本scripty>统一命令脚本：scripty</a></li><li><a href=#统一包管理lerna>统一包管理：[[Lerna]]</a></li><li><a href=#格式化-commit-信息>格式化 commit 信息</a></li></ol></li><li><a href=#如何迁移>如何迁移</a></li></ol></nav></details></aside><a href=#monorepo-实践><h1 id=monorepo-实践><span class=hanchor arialabel=Anchor># </span>monorepo 实践</h1></a><a href=#使用环境volta><h2 id=使用环境volta><span class=hanchor arialabel=Anchor># </span>使用环境：<a href=/Volta rel=noopener class=internal-link data-src=/Volta>Volta</a></h2></a><a href=#复用-packagesworkspace><h2 id=复用-packagesworkspace><span class=hanchor arialabel=Anchor># </span>复用 packages：workspace</h2></a><p>使用 monorepo 策略后，收益最大的两点是：</p><ol><li><p><strong>避免重复安装包，因此减少了磁盘空间的占用，并降低了构建时间</strong>；</p></li><li><p><strong>内部代码可以彼此相互引用</strong>；<br>为了实现前面提到的两点收益，您需要在代码中做三件事：</p></li><li><p>调整目录结构，将相互关联的项目放置在同一个目录，推荐命名为  <code>packages</code>；</p></li><li><p>在项目根目录里的  <code>package.json</code>  文件中，设置  <code>workspaces</code>  属性，属性值为之前创建的目录；</p></li><li><p>同样，在  <code>package.json</code>  文件中，设置  <code>private</code>  属性为  <code>true</code>（为了避免我们误操作将仓库发布）；</p></li></ol><p>经过修改，您的项目目录看起来应该是这样：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>.</span>
+</span></span><span class=line><span class=cl><span class=err>├──</span> <span class=err>package.json</span>
+</span></span><span class=line><span class=cl><span class=err>└──</span> <span class=err>packages/</span>
+</span></span><span class=line><span class=cl>    <span class=err>├──</span> <span class=err>@mono/project_</span><span class=mi>1</span><span class=err>/</span> <span class=err>#</span> <span class=err>推荐使用</span> <span class=err>`@&lt;项目名&gt;/&lt;子项目名&gt;`</span> <span class=err>的方式命名</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>index.js</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>└──</span> <span class=err>package.json</span>
+</span></span><span class=line><span class=cl>    <span class=err>└──</span> <span class=err>@mono/project_</span><span class=mi>2</span><span class=err>/</span>
+</span></span><span class=line><span class=cl>        <span class=err>├──</span> <span class=err>index.js</span>
+</span></span><span class=line><span class=cl>        <span class=err>└──</span> <span class=err>package.json</span>
+</span></span></code></pre></td></tr></table></div></div><p>而当您在项目根目录中执行  <code>npm install</code>  或  <code>yarn install</code>后，您会发现在项目根目录中出现了  <code>node_modules</code>  目录，并且该目录不仅拥有所有子项目共用的 npm 包，还包含了我们的子项目。因此，我们可以在子项目中通过各种模块引入机制，像引入一般的 npm 模块一样引入其他子项目的代码。</p><a href=#统一配置><h2 id=统一配置><span class=hanchor arialabel=Anchor># </span>统一配置</h2></a><p>您一定同意，编写代码要遵循 <a class="internal-link broken">DRY 原则</a>（Don&rsquo;t Repeat Yourself 的缩写）。那么，理所当然地，我们应该尽量避免在多个子项目中放置重复的 eslintrc，tsconfig 等配置文件。幸运的是，Babel，Eslint 和 Typescript 都提供了相应的功能让我们减少自我重复。</p><a href=#typescript><h3 id=typescript><span class=hanchor arialabel=Anchor># </span>TypeScript</h3></a><p>我们可以在  <code>packages</code>  目录中放置  <code>tsconfig.settting.json</code>  文件，并在文件中定义通用的 ts 配置，然后，在每个子项目中，我们可以通过  <code>extends</code>  属性，引入通用配置，并设置  <code>compilerOptions.composite</code>  的值为  <code>true</code>，理想情况下，子项目中的  <code>tsconfig</code>  文件应该仅包含下述内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;extends&#34;</span><span class=p>:</span> <span class=s2>&#34;../tsconfig.setting.json&#34;</span><span class=p>,</span> <span class=c1>// 继承 packages 目录下通用配置
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;compilerOptions&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;composite&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span> <span class=c1>// 用于帮助 TypeScript 快速确定引用工程的输出文件位置
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nt>&#34;outDir&#34;</span><span class=p>:</span> <span class=s2>&#34;dist&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;rootDir&#34;</span><span class=p>:</span> <span class=s2>&#34;src&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;include&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;src&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#eslint><h3 id=eslint><span class=hanchor arialabel=Anchor># </span><a href=/Eslint rel=noopener class=internal-link data-src=/Eslint>Eslint</a></h3></a><p>对于 Eslint 配置文件，我们也可以如法炮制，这样定义子项目的  <code>.eslintrc</code>  文件内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;extends&#34;</span><span class=p>:</span> <span class=s2>&#34;../../.eslintrc&#34;</span><span class=p>,</span> <span class=c1>// 注意这里的不同
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=nt>&#34;parserOptions&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;project&#34;</span><span class=p>:</span> <span class=s2>&#34;tsconfig.json&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#babel><h3 id=babel><span class=hanchor arialabel=Anchor># </span>Babel</h3></a><p>Babel 配置文件合并的方式与 TypeScript 如出一辙，甚至更加简单，我们只需在子项目中的  <code>.babelrc</code>  文件中这样声明即可：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>  &#34;extends&#34;: &#34;../.babelrc&#34;
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p>当一切准备就绪后，我们的项目目录应该大致呈如下所示的结构：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=err>.</span>
+</span></span><span class=line><span class=cl><span class=err>├──</span> <span class=err>package.json</span>
+</span></span><span class=line><span class=cl><span class=err>├──</span> <span class=err>.eslintrc</span>
+</span></span><span class=line><span class=cl><span class=err>└──</span> <span class=err>packages/</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>tsconfig.settings.json</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>.babelrc</span>
+</span></span><span class=line><span class=cl>    <span class=err>├──</span> <span class=err>@mono/project_</span><span class=mi>1</span><span class=err>/</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>index.js</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>.eslintrc</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>.babelrc</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>├──</span> <span class=err>tsconfig.json</span>
+</span></span><span class=line><span class=cl>    <span class=err>│</span>   <span class=err>└──</span> <span class=err>package.json</span>
+</span></span><span class=line><span class=cl>    <span class=err>└───@mono/project_</span><span class=mi>2</span><span class=err>/</span>
+</span></span><span class=line><span class=cl>        <span class=err>├──</span> <span class=err>index.js</span>
+</span></span><span class=line><span class=cl>        <span class=err>├──</span> <span class=err>.eslintrc</span>
+</span></span><span class=line><span class=cl>        <span class=err>├──</span> <span class=err>.babelrc</span>
+</span></span><span class=line><span class=cl>        <span class=err>├──</span> <span class=err>tsconfig.json</span>
+</span></span><span class=line><span class=cl>        <span class=err>└──</span> <span class=err>package.json</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#统一命令脚本scripty><h3 id=统一命令脚本scripty><span class=hanchor arialabel=Anchor># </span>统一命令脚本：scripty</h3></a><p>scripty 允许您将脚本命令定义在文件中，并在  <code>package.json</code>  文件中直接通过文件名来引用。这使我们可以实现如下目的：</p><ol><li><strong>子项目间复用脚本命令</strong>；</li><li><strong>像写代码一样编写脚本命令，无论它有多复杂，而在调用时，像调用函数一样调用</strong>；</li></ol><p>注意，我们脚本分为两类「package 级别」与「workspace 级别」，并且分别放在两个文件夹内。这样做的好处在于，我们既可以在项目根目录执行全局脚本，也可以针对单个项目执行特定的脚本。</p><p>通过使用 scripty，子项目的  <code>package.json</code>  文件中的  <code>scripts</code>  属性将变得非常精简：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=err>...</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;scripts&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;test&#34;</span><span class=p>:</span> <span class=s2>&#34;scripty&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;lint&#34;</span><span class=p>:</span> <span class=s2>&#34;scripty&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;build&#34;</span><span class=p>:</span> <span class=s2>&#34;scripty&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;scripty&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=s2>&#34;../../scripts/packages&#34;</span> <span class=c1>// 注意这里我们指定了 scripty 的路径
+</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>},</span>
+</span></span><span class=line><span class=cl>  <span class=err>...</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><a href=#统一包管理lerna><h3 id=统一包管理lerna><span class=hanchor arialabel=Anchor># </span>统一包管理：<a href=/Lerna rel=noopener class=internal-link data-src=/Lerna>Lerna</a></h3></a><a href=#格式化-commit-信息><h3 id=格式化-commit-信息><span class=hanchor arialabel=Anchor># </span>格式化 commit 信息</h3></a><p><a href=/commitLint rel=noopener class=internal-link data-src=/commitLint>commitLint</a> 和<a class="internal-link broken">husky</a></p><a href=#如何迁移><h2 id=如何迁移><span class=hanchor arialabel=Anchor># </span>如何迁移</h2></a><p>Lerna 为我们提供了  <code>lerna import</code>  命令，用来将我们已有的包导入到 monorepo 仓库，并且还会保留该仓库的所有 commit 信息。然而实际上，该命令仅支持<strong>导入本地项目</strong>，并且<strong>不支持</strong>导入项目的分支和标签</p><p>那么如果我们想要导入远程仓库，或是要获取某个分支或标签该怎么做呢？答案是使用  
+<a href=https://github.com/hraban/tomono rel=noopener>tomono</a>，其内容是一个 shell 脚本。</p><p>使用 tomono 导入远程仓库，您所需要做的只有两件事：</p><ol><li>创建一个包含所有需要导入 repo 地址的文本文件；</li><li>执行 shell 命令：<code>cat repos.txt | ~/tomono/tomono.sh</code>（这里我们假定您的文本文件名为  <code>repos.txt</code>，且您将 tomono 下载在用户根目录；</li></ol><p>repo 文件内容示例如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>// 1. Git仓库地址  2. 子项目名称  3. 迁移后的路径
+</span></span><span class=line><span class=cl>git@github.com/backend.git @mono/backend packages/backend
+</span></span><span class=line><span class=cl>git@github.com/frontend.git @mono/frontend packages/frontend
+</span></span><span class=line><span class=cl>git@github.com/mobile.git @mono/mobile packages/mobile
+</span></span></code></pre></td></tr></table></div></div></article><hr><div class=page-end id=footer><div class=backlinks-container><h3>反向链接</h3><ul class=backlinks><li><a href=/monorepo/ data-ctx=monorepo实践 data-src=/monorepo class=internal-link>monorepo 的优劣势</a></li></ul></div><div><script src=https://cdn.jsdelivr.net/npm/d3@6.7.0/dist/d3.min.js integrity="sha256-+7jaYCp29O1JusNWHaYtgUn6EhuP0VaFuswhNV06MyI=" crossorigin=anonymous></script><h3>内部链接关系图</h3><div id=graph-container></div><style>:root{--g-node:var(--secondary);--g-node-active:var(--primary);--g-node-inactive:var(--visited);--g-link:var(--outlinegray);--g-link-active:#5a7282}</style><script src=https://note.xiaopang.fun/js/graph.abd4bc2af3869a96524d7d23b76152c7.js></script></div></div><hr><script src=https://giscus.app/client.js data-repo=chelseachen007/ObPublish data-repo-id=R_kgDOJSeHfQ data-category=General data-category-id=DIC_kwDOJSeHfc4CXVcx data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=preferred_color_scheme data-lang=zh-CN data-loading=lazy crossorigin=anonymous async></script><center><script>var caution=!1,now,visits;function setCookie(e,t,n,s,o,a){var i=e+"="+escape(t)+(n?"; expires="+n.toGMTString():"")+(s?"; path="+s:"")+(o?"; domain="+o:"")+(a?"; secure":"");!caution||(e+"="+escape(t)).length<=4e3?document.cookie=i:confirm("Cookie exceeds 4KB and will be cut!")&&(document.cookie=i)}function getCookie(s){var e=s+"=",n,t=document.cookie.indexOf(e);return t==-1?null:(n=document.cookie.indexOf(";",t+e.length),n==-1&&(n=document.cookie.length),unescape(document.cookie.substring(t+e.length,n)))}function deleteCookie(e,t,n){getCookie(e)&&(document.cookie=e+"="+(t?"; path="+t:"")+(n?"; domain="+n:"")+"; expires=Thu, 01-Jan-70 00:00:01 GMT")}function fixDate(e){var n=new Date(0),t=n.getTime();t>0&&e.setTime(e.getTime()-t)}now=new Date,fixDate(now),now.setTime(now.getTime()+730*24*60*60*1e3),visits=getCookie("counter"),visits?visits=parseInt(visits)+1:visits=1,setCookie("counter",visits,now),document.write("<font size=2>👋访问量："+visits+"")</script></center></div></body></html>

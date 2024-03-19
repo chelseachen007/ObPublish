@@ -25,7 +25,6 @@ Obsidian 笔记助手 Text Generator
 即可高亮，第二个引号可以省略。
 [Various Complements]插件同理，在匹配中文时，只能搜索词语或短语，不能直接搜索整句。
 可以在[Dataview]中调用获得搜索数据，词条加&amp;quot;&amp;quot;，则代表完全匹配搜索，不加则会按照中文分词依据分词进行匹配搜索。
-1 2 3 const results = await omnisearch.search(&amp;#39;降维打击&amp;#39;) const arr = dv.</description></item><item><title>Supercharged Links</title><link>https://note.xiaopang.fun/Supercharged-Links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/Supercharged-Links/</guid><description>Supercharged Links #状态/todo
-有空折腾一下，让我的数字花园有灵魂
+1 2 3 const results = await omnisearch.search(&amp;#39;降维打击&amp;#39;) const arr = dv.</description></item><item><title>Supercharged Links</title><link>https://note.xiaopang.fun/Supercharged-Links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://note.xiaopang.fun/Supercharged-Links/</guid><description>Supercharged Links 有空折腾一下，让我的数字花园有灵魂
 首先在css 中加好 tags 对应的图标
 data-link-tags 对应的就是 tags 的名字 1 2 3 4 5 6 7 a.</description></item></channel></rss>
