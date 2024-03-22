@@ -16,7 +16,7 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: "note.xiaopang.fun",
-    ignorePatterns: ["private", "textgenerator", ".obsidian"],
+    ignorePatterns: ["private", "textgenerator", ".obsidian", "行思录"],
     defaultDateType: "created",
     theme: {
       fontOrigin: "googleFonts",
