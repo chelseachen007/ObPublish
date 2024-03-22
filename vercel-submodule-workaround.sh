@@ -5,7 +5,6 @@ set -Eeuo pipefail
 GITMODULES=".gitmodules"
 FEXT=".bak"
 GITMODULES_BACKUP="${GITMODULES}${FEXT}"
-GITHUB_REPO_CLONE_TOKEN="111"
 
 function cleanup {
   echo "Cleaning the runner..."
