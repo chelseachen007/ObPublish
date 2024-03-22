@@ -17,7 +17,7 @@ const config: QuartzConfig = {
     locale: "zh-CN",
     baseUrl: "note.xiaopang.fun",
     ignorePatterns: ["private", "textgenerator", ".obsidian", "行思录"],
-    defaultDateType: "modified",
+    defaultDateType: "created",
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
@@ -54,7 +54,7 @@ const config: QuartzConfig = {
     transformers: [
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({
-        priority: ["frontmatter", "filesystem"],
+        priority: ["frontmatter"],
       }),
       Plugin.Latex({ renderEngine: "katex" }),
       Plugin.SyntaxHighlighting({
