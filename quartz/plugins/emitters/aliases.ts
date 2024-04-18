@@ -66,7 +66,6 @@ export const AliasRedirects: QuartzEmitterPlugin = () => ({
             <meta name="robots" content="noindex">
             <meta charset="utf-8">
             <meta http-equiv="refresh" content="0; url=${redirUrl}">
-            <script defer src="https://umami.xiaopang.fun/script.js" data-website-id="f21674da-eb15-46cc-a6e2-1694e685de6f"></script>
             </head>
             </html>
             `,

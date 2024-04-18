@@ -2,7 +2,6 @@ import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } fro
 import style from "./styles/footer.scss"
 import { version } from "../../package.json"
 import { i18n } from "../i18n"
-import Comments from "./Comments"
 
 interface Options {
   links: Record<string, string>
@@ -15,7 +14,6 @@ export default ((opts?: Options) => {
     return (
       <div>
         <hr />
-        {Comments()()}
         <footer class={`${displayClass ?? ""}`}>
           <hr />
           <p>
