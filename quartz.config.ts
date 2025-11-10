@@ -15,7 +15,7 @@ const config: QuartzConfig = {
       provider: "plausible",
     },
     locale: "zh-CN",
-    baseUrl: "note.xiaopang.fun",
+    baseUrl: "note.trotter.top",
     ignorePatterns: ["private", "textgenerator", ".obsidian", "行思录"],
     defaultDateType: "modified",
     generateSocialImages: false,
