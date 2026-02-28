@@ -9,7 +9,7 @@ import * as Plugin from "./quartz/plugins"
 const config: QuartzConfig = {
   configuration: {
     pageTitle: "🪴 小胖的数字花园",
-    enableSPA: true,
+    enableSPA: false,
     enablePopovers: true,
     analytics: {
       provider: "plausible",
@@ -18,7 +18,6 @@ const config: QuartzConfig = {
     baseUrl: "note.trotter.top",
     ignorePatterns: ["private", "textgenerator", ".obsidian", "行思录"],
     defaultDateType: "modified",
-    generateSocialImages: false,
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
