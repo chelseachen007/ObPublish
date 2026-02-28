@@ -97,6 +97,28 @@ export default (() => {
             return resource
           }
         })}
+        <script
+          defer
+          src="https://umami.xiaopang.fun/script.js"
+          data-website-id="f21674da-eb15-46cc-a6e2-1694e685de6f"
+        ></script>
+        <script
+          src="https://giscus.app/client.js"
+          data-repo="chelseachen007/ObPublish"
+          data-repo-id="R_kgDOJSeHfQ"
+          data-category="General"
+          data-category-id="DIC_kwDOJSeHfc4CXVcx"
+          data-mapping="pathname"
+          data-strict="0"
+          data-reactions-enabled="1"
+          data-emit-metadata="0"
+          data-input-position="bottom"
+          data-theme="preferred_color_scheme"
+          data-lang="zh-CN"
+          data-loading="lazy"
+          crossorigin="anonymous"
+          async
+        ></script>
       </head>
     )
   }
