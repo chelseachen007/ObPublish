@@ -16,7 +16,7 @@ const config: QuartzConfig = {
     },
     locale: "zh-CN",
     baseUrl: "note.trotter.top",
-    ignorePatterns: ["private", "textgenerator", ".obsidian", "行思录"],
+    ignorePatterns: ["private", "textgenerator", ".obsidian", "行思录", "剪藏", "模板", "sigma", "洞察报告", "AI探索报告"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
