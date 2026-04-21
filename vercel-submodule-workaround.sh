@@ -30,6 +30,10 @@ function submodule_workaround {
   git submodule sync
   echo "Done!"
 
+  echo "Removing existing submodule directories..."
+  git config --file .gitmodules --get-regexp path | awk '{print $2}' | xargs rm -rf
+  echo "Done!"
+
   echo "Updating the registered submodules to match what the superproject expects..."
   git submodule update --init --recursive --jobs "$(getconf _NPROCESSORS_ONLN)"
   echo "Done!"
