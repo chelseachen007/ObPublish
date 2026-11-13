@@ -1,1 +1,5 @@
-{ "cleanUrls": true }
+{
+  "cleanUrls": true,
+  "installCommand": "bash ./vercel-submodule-workaround.sh && yarn install --frozen-lockfile",
+  "buildCommand": "npx quartz build"
+}
