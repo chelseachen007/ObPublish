@@ -11,6 +11,7 @@
 #   GITHUB_REPO_CLONE_USER   token 对应的用户名，默认 x-access-token
 #   SUBMODULE_FULL_CLONE=1   强制全量克隆（排查用）
 #   SUBMODULE_RETRIES=3      重试次数，默认 3
+#   SUBMODULE_MAX_DEPTH=2000 浅克隆取不到目标 commit 时最多加深到多少条历史
 #
 # 注意：content 子模块（Obsidian 库）是**私有**仓库，.gitmodules 里写的是
 # https://github.com/... 而不是旧脚本期待的唯一形式 git@github.com:，
@@ -22,6 +23,7 @@ GITMODULES=".gitmodules"
 FEXT=".bak"
 GITMODULES_BACKUP="${GITMODULES}${FEXT}"
 RETRIES="${SUBMODULE_RETRIES:-3}"
+MAX_DEPTH="${SUBMODULE_MAX_DEPTH:-2000}"
 CLONE_USER="${GITHUB_REPO_CLONE_USER:-x-access-token}"
 # 凭证只交给子命令（-c 参数走 argv，不写进 .gitconfig/文件，也不会进 git remote 输出）
 GIT_AUTH=()
@@ -107,29 +109,47 @@ submodule_workaround() {
     retry "submodule fetch" g submodule update --init --recursive --jobs "$(getconf _NPROCESSORS_ONLN)" \
       || { log "✗ 全量拉取失败，构建中止"; return 1; }
   else
-    # 逐个处理：每个子模块自己决定要哪个 commit，partial clone 才有意义
     for p in $paths; do
-      local sha
-      sha="$(git ls-tree HEAD "$p" | awk '{print $3}')"
-      log "拉取 $p @ ${sha:0:10}（partial clone）..."
-      local url
+      local url sha
       url="$(git config --file .gitmodules --get "submodule.$p.url")"
-      retry "fetch $p" g -c protocol.version=2 clone \
-        --filter=blob:none --no-checkout --depth 1 \
-        --no-single-branch "$url" "$p" \
-        || {
-          log "partial clone 失败，退回全量拉取 $p"
-          retry "full fetch $p" g submodule update --init --recursive -- "$p" \
-            || { log "✗ $p 拉取失败（partial 与全量都没成功），构建中止"; return 1; }
-        }
+      sha="$(git ls-tree HEAD "$p" | awk '{print $3}')"
+      log "拉取 $p @ ${sha:0:10}（partial clone）"
+      rm -rf "$p" ".git/modules/$p"
 
-      retry "checkout $p" g -C "$p" fetch --filter=blob:none origin "$sha" \
-        || { log "按 sha 直取失败，退回 origin/HEAD"; g -C "$p" fetch --filter=blob:none origin; }
-      git -C "$p" -c advice.detachedHead=false checkout --force --quiet "$sha" 2>/dev/null || {
-        log "checkout $sha 失败，改用 origin/HEAD"
-        git -C "$p" -c advice.detachedHead=false checkout --force --quiet "$(git -C "$p" rev-parse origin/HEAD)" 2>/dev/null
-      }
-      log "✓ $p 就位（$(git -C "$p" rev-parse --short HEAD 2>/dev/null || echo "?")）"
+      # 注意：这里刻意不写 checkout，先确认对象真的到位。
+      # 浅仓库（--depth 1）遇到目标 commit 不在最近一次提交上时，fetch 会成功但对象缺失，
+      # 之后的 checkout 报 128 —— 所以「能进到 fetch 之后」不代表就位。
+      if ! g -c protocol.version=2 clone --filter=blob:none --no-checkout --depth 1 \
+           --no-single-branch "$url" "$p"; then
+        log "✗ $p partial clone 失败，构建中止"
+        return 1
+      fi
+
+      if ! g -C "$p" cat-file -e "${sha}^{commit}" 2>/dev/null; then
+        # 目标是别的分支上的提交时，浅克隆里既没有对象也没法按 sha 取，
+        # 只能加深历史直到它出现（深度够深时才允许把具体 sha 直接取下来）
+        local depth count=1
+        while [ "$count" -lt "$MAX_DEPTH" ]; do
+          depth=$((count * 2))
+          log "目标 ${sha:0:10} 不在浅克隆里，加深到 ${depth}"
+          g -C "$p" fetch --filter=blob:none --deepen="$depth" origin || break
+          count="$(g -C "$p" rev-list --count HEAD 2>/dev/null || echo 0)"
+          if g -C "$p" cat-file -e "${sha}^{commit}" 2>/dev/null; then break; fi
+          if [ "$count" -ge "$MAX_DEPTH" ]; then break; fi
+        done
+      fi
+      if ! g -C "$p" cat-file -e "${sha}^{commit}" 2>/dev/null; then
+        log "⚠ 仍未取到 ${sha:0:10}（历史已 $((count)) 条），改按 sha 拉取"
+        g -C "$p" fetch --filter=blob:none --depth=1 origin "$sha" \
+          || g -C "$p" fetch --filter=blob:none origin "$sha" || true
+      fi
+      if ! g -C "$p" cat-file -e "${sha}^{commit}" 2>/dev/null; then
+        log "✗ 目标 commit ${sha:0:10} 取不到（历史上限 ${MAX_DEPTH}），构建中止"
+        return 1
+      fi
+
+      g -C "$p" -c advice.detachedHead=false checkout --force --quiet "$sha"
+      log "✓ $p 就位（$(g -C "$p" rev-parse --short HEAD 2>/dev/null || echo "?")，工作区 $(find "$p" -type f -not -path '*/.git/*' 2>/dev/null | wc -l | tr -d ' ') 个文件）"
     done
   fi
 
